@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html suppresshydrationwarning="true" data-lt-installed="true"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>
+        mon site d'apprentissage
+    </title>
+</head>
+<body>
+    
+    <h1></h1>
+    <p> this is the first website</p>
+
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat 
+quia id enim dolores ullam, dignissimos, aspernatur doloremque error 
+repellendus in quod ipsa! Non hic, maxime consequuntur amet minima quod 
+officiis?</p>
+    <!--this is a comment-->
+        <a href="https://youtu.be/pDddlvCfTiw?si=C6Pe_6WBCRrZuvsl" target="_blank" title="video">click ici</a>
+<a href="http://127.0.0.1:5500/defi-de-42j/html/lyrics.html">song lyrics</a>
+    
+    
+    <br>
+
+
+    <a href="mailto:alibensalem828@gmail.com">email me</a>
+    <hr>
+<h1>lambo </h1> 
+    <a href="http://127.0.0.1:5500/defi-de-42j/html/images.jpeg">lambo</a>
+    <img src="mon%20site%20d'apprentissage_files/images.jpeg" alt="lambo" height="200" width="200">
+
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+</body></html>
