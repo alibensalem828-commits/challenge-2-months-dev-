@@ -5,9 +5,91 @@
         <title>
         formulaire
     </title></head>
-
+<input type="e"
 <body>
 <header>
+    <style>
+        form {
+  /* On centre le formulaire */
+  margin: 0 auto;
+  width: 400px;
+  /* Le contour du formulaire */
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+form li + li {
+  margin-top: 1em;
+}
+
+label {
+  /* Taille et alignement uniformes */
+  display: inline-block;
+  width: 90px;
+  text-align: right;
+}
+
+input,
+textarea {
+  /* On s'assure que les ch
+}
+
+textarea {
+
+/* On aligne les te
+
+
+}
+
+
+textarea {
+
+/* On aligne les teamps texte ont la même police
+     Par défaut, les zones de texte ont une police à chasse
+     fixe. */
+  font: 1em sans-serif;
+
+  /* Taille uniforme pour des champs */
+  width: 300px;
+  box-sizing: border-box;
+
+  /* On utilise la même bordure que pour le formulaire */
+  border: 1px solid #999;
+}
+
+
+
+
+textarea {
+  /* On aligne les textes sur plusieurs lignes avec leur
+     libellé. */
+  vertical-align: top;
+
+  /* On fournit un peut d'espace pour saisir du texte. */
+  height: 5em;
+
+  /* On permet de redimensionner verticalement. */
+  resize: vertical;
+}
+
+.button {
+  /* On aligne les boutons avec les champs texte. */
+  padding-left: 90px; /* La même taille que les libellés */
+}
+
+button {
+  /* Une marge supplémentaire représentant approximativement
+     le même espace qu'entre les libellés et les champs. */
+  margin-left: 0.5em;
+}
+    </style>
     <h1>objet :</h1>
     <input type="search" placeholder="à propos">
 </header>
@@ -37,8 +119,82 @@
 <button type="submit">envoyer</button>
 </div>
 </form>
+<hr>
+<label>
+    <input type="number">
+    <input type="date">
+    <input type="text">
+    <input type="tel">
+    <input type="reset">
+    <input type="radio" name="radio"><input type="radio" name="radio"><input type="radio" name="radio">
+    <input type="checkbox">
+    <input type="range">
+</label>
+<br>
+<label>
+    <select>
+        <option value="option plus">youssef</option>
+        <option value="demande de devis">ali</option><!---->valeur envoyer au serveur le value <!---->
+    </select>
+</label>
+<br>
+<hr>
+<fieldset>
+    <legend>rouleur de pizza</legend>
+    <input type="radio" id="pt" name="taille" value="petit">
+  <label for="pt">Petit</label>
+  <input type="radio" id="mo" name="taille" value="moyen">
+  <label for="mo">Moyen</label>
+</fieldset>
+<hr>
+<hr><br><hr>
+
+<table>
+    <caption>
+        titre horaire generale
+    </caption>
+   
+<thead>
+    l'entaite zone
+</thead>
+<tbody>le corps le milieu </tbody>
+<tr>une ligne</tr>
+<th>c quoi ca</th>
+<td>table de data </td>
+<hr>
+<br>
 
 
+</table>
+
+<br><hr>
+<table>
+  <caption>Horaires d'ouverture</caption>
+  <thead>
+    <tr>
+      <th scope="col">Jour</th>
+      <th scope="col">Horaires</th>
+      <th>depart</th>
+      <th>arrivé</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Lundi</th>
+      <td>9h – 18h</td>
+    </tr>
+    <tr>
+      <th scope="row">Dimanche</th>
+      <td>Fermé</td>
+    </tr>
+    <tr>
+        <th>
+            lundi
+            <td>ouvert</td>
+        </th>
+    </tr>
+  </tbody>
+</table>
 
 
 <footer></footer>
