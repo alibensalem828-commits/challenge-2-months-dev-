@@ -1,0 +1,37 @@
+p ,h1{color: blueviolet;}
+body{
+    background-color: rgb(255, 255, 255);
+}
+#p1{
+    color: aqua;
+}
+#p2{color: hsla(0, 99%, 49%, 0.527);}
+ 
+.even{
+    color: rgb(3, 0, 151);
+}
+.odd{
+    color: #fcf803;
+}
+h1 {font-family:VERDANA ,Arial;
+
+f{
+    background-color: rgb(0, 219, 219);
+}
+
+}
+p {font-family: "lucida console" , "courier new ";
+font-size: 1.5em;
+font-weight: bold;
+font-style: oblique;
+
+
+}
+/*@font-face {
+    font-family: ;
+    src: url();
+}*/
+h1{
+    border-style: inset;
+    border-width: 3px;
+}

@@ -1,9 +1,17 @@
 
-        h1 {
-            color: red;
-            font-size: 20px;
-        }
-        p { color: aqua;
-        padding: 5dvb;
-    background: midnightblue;}
-    
+
+nav{
+    color: rgb(221, 7, 7) ;
+}
+li em{
+    color: rgb(52, 255, 1);
+}
+.special { margin: 30 20
+    ;font-weight: bold;
+    color: darkgreen;
+
+}
+p + h1 {
+    font-size: xx-large;
+    color: blueviolet;
+}
