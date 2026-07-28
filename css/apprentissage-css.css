@@ -1,4 +1,4 @@
-p ,h1{color: blueviolet;}
+p ,h1{color: rgb(0, 0, 0);}
 body{
     background-color: rgb(255, 255, 255);
 }
@@ -32,6 +32,22 @@ font-style: oblique;
     src: url();
 }*/
 h1{
-    border-style: inset;
-    border-width: 3px;
+    border: inset 3px hsl(0, 98%, 50%);
+    border-radius: 15px;
+}
+p{
+    border-bottom: #fcf803 outset 5px;
+    border-top: #525000 outset 2px;
+    border-left: 5px dotted red;
+    border-right: 5px dotted red;
+    border-radius: 10px;
+}
+h1{
+    text-shadow: 2px 1px 5px red, -2px -1px 5px blue;
+}
+#box1{
+width: 150px;background-color: lch(52.49% 0.4 18.47);height: 150px;
+box-shadow: 2px 2px 5px violet;
+border-radius: 10px;
+
 }
