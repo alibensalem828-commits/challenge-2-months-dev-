@@ -2,11 +2,15 @@ body{
     margin: 5px;
 }
 .box{
-    border:5px solid rgb(212, 2, 240);
+    border:5px solid rgb(0, 0, 0);
     border-radius: 10px;
     font-size: 5em;
     width: 250px;
-    height: 25px;
-padding-bottom: 15px;
-padding-left: 15px;
-padding-right: 15px;}
+    height: 250px;margin: auto;
+}
+#box1{background-color: red; margin-right: auto;}
+#box2{background-color: blue
+;margin-left: auto;}
+#box3{margin: auto;
+background-color: purple;
+}
