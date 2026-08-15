@@ -1,0 +1,853 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     [H00]  L'ATELIER DES RAYONS — fichier d'apprentissage HTML
+     ═══════════════════════════════════════════════════════════════════════════
+
+     COMMENT UTILISER CE FICHIER
+     ---------------------------
+     1. Mets index.html ET style.css dans le MÊME dossier.
+     2. Ouvre le dossier dans VS Code, clic droit sur index.html > "Open with Live Server".
+     3. Lis les commentaires [H01], [H02]... au fur et à mesure.
+     4. Quand tu vois 🔧 ESSAIE : fais-le. C'est là que tu apprends.
+     5. Une question ? Écris-moi "explique-moi H23" ou "explique-moi C41".
+
+     RÈGLE DU JEU : casse tout. Supprime des balises, change des valeurs,
+     regarde ce qui se passe. Tu ne peux rien casser d'irréparable.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<!-- [H01] <!DOCTYPE html> — dit au navigateur "c'est du HTML moderne".
+     Toujours la 1re ligne. Sans elle, le navigateur passe en "mode bizarre"
+     (quirks mode) et ton CSS se comporte n'importe comment. -->
+<!DOCTYPE html>
+
+<!-- [H02] lang="fr" — la langue du document.
+     UTILITÉ RÉELLE : les lecteurs d'écran prononcent avec le bon accent,
+     Google sait à qui servir ta page, le correcteur du navigateur marche.
+     Lighthouse te retire des points si elle manque. -->
+<html lang="fr">
+
+<head>
+  <!-- [H03] charset — DOIT être dans les 1000 premiers caractères du fichier.
+       Sans lui : "Réservé" s'affiche "RÃ©servÃ©". C'est LE bug des accents. -->
+  <meta charset="UTF-8">
+
+  <!-- [H04] LA balise viewport. Sans elle, AUCUNE media query CSS ne marche
+       sur mobile : le téléphone fait semblant d'avoir un écran de 980px.
+       🔧 ESSAIE : supprime cette ligne, ouvre en mode iPhone (F12 puis Ctrl+Shift+M).
+       Tu verras exactement à quoi ressemble un site "non responsive". -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- [H05] <title> — l'onglet du navigateur ET le titre bleu dans Google.
+       Format qui marche : "Ce que tu fais | Marque". Vise 50-60 caractères. -->
+  <title>Réparation de vélos à Nantes | L'Atelier des Rayons</title>
+
+  <!-- [H06] meta description — le texte gris sous le lien dans Google.
+       Ne change pas ton classement, mais fait cliquer. 150-160 caractères.
+       Argument client : "je vous écris une description qui fait cliquer". -->
+  <meta name="description"
+        content="Atelier de réparation et d'entretien de vélos à Nantes. Diagnostic gratuit, réparation en 48 h, révision complète dès 45 €. Ouvert du mardi au samedi.">
+
+  <!-- [H07] Open Graph — l'aperçu quand on partage ton lien sur WhatsApp,
+       Facebook, LinkedIn, Slack. Sans ça : un lien nu, moche, jamais cliqué.
+       UTILITÉ FREELANCE : ça se voit tout de suite et personne ne le fait. -->
+  <meta property="og:title" content="L'Atelier des Rayons — Réparation de vélos à Nantes">
+  <meta property="og:description" content="Diagnostic gratuit, réparation en 48 h.">
+  <meta property="og:image" content="https://picsum.photos/seed/atelier-og/1200/630">
+  <meta property="og:type" content="website">
+
+  <!-- [H08] theme-color — colore la barre du navigateur sur Android. Détail gratuit. -->
+  <meta name="theme-color" content="#16202b">
+
+  <!-- [H09] Favicon en SVG inline. Normalement tu mets <link rel="icon" href="favicon.ico">.
+       Ici je le dessine directement pour que le fichier marche tout seul. -->
+  <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2316202b'/><circle cx='16' cy='16' r='9' fill='none' stroke='%23ffd21f' stroke-width='2.5'/><circle cx='16' cy='16' r='2' fill='%23ffd21f'/></svg>">
+
+  <!-- [H10] preconnect — ouvre la connexion aux serveurs de polices EN AVANCE,
+       pendant que le HTML se lit. Gagne 100-300 ms. Lighthouse adore. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- [H11] Les polices. Note bien : UNE SEULE famille (Archivo) en 3 graisses,
+       + une mono. Chaque graisse = un fichier à télécharger.
+       Charger "toutes les graisses au cas où" = un site lent. -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+  <!-- [H12] Le lien vers ton CSS. Toujours dans le <head>, toujours en dernier
+       (comme ça il peut surcharger ce qui précède). -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- [H13] SKIP LINK — lien caché qui apparaît si on appuie sur Tab en arrivant.
+     Il permet à quelqu'un qui navigue au clavier de sauter les 12 liens du menu.
+     🔧 ESSAIE : clique dans la page, appuie sur Tab. Il apparaît en haut. -->
+<a href="#contenu" class="skip-link">Aller au contenu</a>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     [H14] <header> — l'en-tête. Une balise SÉMANTIQUE.
+     Sémantique = la balise dit CE QUE C'EST, pas à quoi ça ressemble.
+     <div class="header"> marche visuellement mais ne dit rien à Google
+     ni aux lecteurs d'écran. C'est gratuit, donc on le fait.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<header class="entete">
+  <div class="conteneur entete__interieur">
+
+    <a href="#" class="logo" aria-label="L'Atelier des Rayons, accueil">
+      <span class="logo__roue" aria-hidden="true"></span>
+      <span class="logo__texte">L'Atelier<strong>des Rayons</strong></span>
+    </a>
+
+    <!-- [H15] <nav> = la navigation principale. Les lecteurs d'écran peuvent
+         sauter directement dessus. Un <div> ne permet pas ça. -->
+    <nav aria-label="Navigation principale">
+      <!-- [H16] Un menu est une LISTE de liens. C'est un <ul>, sémantiquement.
+           Le lecteur d'écran annonce "liste de 5 éléments" — l'utilisateur
+           sait combien il y en a avant de commencer. -->
+      <ul class="nav__liste">
+        <!-- [H17] aria-current="page" = "tu es ici". Utilisé par le CSS
+             (sélecteur d'attribut) ET annoncé par les lecteurs d'écran. -->
+        <li><a href="#prestations" aria-current="page">Prestations</a></li>
+        <li><a href="#tarifs">Tarifs</a></li>
+        <li><a href="#atelier">L'atelier</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#rdv" class="btn btn--compact">Prendre RDV</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<!-- [H18] <main> — le contenu principal. UN SEUL par page, obligatoirement.
+     Tout ce qui est répété sur chaque page (header, nav, footer) reste dehors. -->
+<main id="contenu">
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       LE HERO
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="conteneur hero__grille">
+
+      <div class="hero__texte">
+        <!-- [H19] "eyebrow" : le petit texte au-dessus du titre.
+             Ce n'est PAS un h2 (ce n'est pas un titre), c'est un <p>. -->
+        <p class="eyebrow">Nantes · Quartier Talensac</p>
+
+        <!-- [H20] <h1> — UN SEUL par page. C'est le sujet de la page.
+             Erreur classique : mettre le nom de l'entreprise en h1 partout.
+             Le h1 doit dire ce que le VISITEUR cherche.
+             Les titres h1>h2>h3 forment un plan : on ne saute pas de niveau
+             pour faire "plus petit" — ça, c'est le rôle du CSS. -->
+        <h1 class="hero__titre">
+          Votre vélo réparé<br>
+          <span class="souligne">en 48 heures</span>
+        </h1>
+
+        <p class="hero__accroche">
+          Diagnostic gratuit, devis clair avant toute intervention, pièces
+          garanties un an. Déposez votre vélo le matin, on vous appelle
+          avant midi.
+        </p>
+
+        <div class="hero__actions">
+          <a href="#rdv" class="btn btn--principal">Prendre rendez-vous</a>
+          <!-- [H21] tel: — sur mobile, ça LANCE l'appel. Indispensable
+               pour un commerce local. Format international, sans espaces.
+               Idem mailto: pour l'email. -->
+          <a href="tel:+33240000000" class="btn btn--fantome">02 40 00 00 00</a>
+        </div>
+
+        <!-- [H22] <ul> sans puces visuelles — mais ça reste une LISTE
+             dans le HTML. On enlève les puces en CSS, pas en HTML. -->
+        <ul class="hero__preuves">
+          <li>Diagnostic offert</li>
+          <li>Devis avant travaux</li>
+          <li>Pièces garanties 1 an</li>
+        </ul>
+      </div>
+
+      <!-- [H23] <figure> + <figcaption> = une illustration ET sa légende,
+           liées sémantiquement. Différent d'un <img> suivi d'un <p>. -->
+      <figure class="hero__visuel">
+        <!-- [H24] L'IMAGE — 5 choses à ne jamais oublier :
+             • alt = ce que dit un lecteur d'écran. Décris l'INFO, pas l'image.
+                     Image purement décorative → alt="" (vide, pas absent).
+             • width + height = les DIMENSIONS RÉELLES du fichier. Elles
+                     réservent la place et empêchent la page de sauter au
+                     chargement. Lighthouse mesure ça (métrique "CLS").
+             • loading="lazy" = ne charge que si l'image approche de l'écran.
+                     JAMAIS sur l'image du hero (elle est visible tout de suite).
+             • decoding="async" = ne bloque pas l'affichage du reste.
+             • Le CSS fait le reste (voir [C40] object-fit). -->
+        <img src="https://picsum.photos/seed/atelier-velo/800/1000"
+             alt="Un mécanicien règle le dérailleur arrière d'un vélo de ville sur un pied d'atelier"
+             width="800" height="1000"
+             decoding="async">
+        <figcaption>L'atelier, un mardi matin.</figcaption>
+      </figure>
+
+      <!-- [H25] La cote technique — décorative, donc aria-hidden="true" :
+           invisible pour les lecteurs d'écran, qui ne liront pas "1 2 0 pixels". -->
+      <div class="cote cote--hero" aria-hidden="true">
+        <span class="cote__ligne"></span>
+        <span class="cote__valeur">gap : 4rem</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       [H26] PRESTATIONS — <section> = un bloc thématique.
+       Une <section> DOIT avoir un titre. Sinon, utilise un <div>.
+       aria-labelledby relie la section à son titre : le lecteur d'écran
+       annonce "section Prestations".
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section" id="prestations" aria-labelledby="titre-prestations">
+    <div class="conteneur">
+
+      <header class="section__entete">
+        <p class="eyebrow">01 — Ce qu'on fait</p>
+        <h2 id="titre-prestations">Trois formules, zéro surprise</h2>
+        <p class="section__intro">
+          Chaque intervention commence par un diagnostic gratuit. Vous
+          recevez le devis par SMS, et rien ne démarre sans votre accord.
+        </p>
+      </header>
+
+      <!-- [H27] <article> = un contenu qui a du sens TOUT SEUL, sorti de
+           la page. Une carte produit, un article de blog, un avis client.
+           Si ça n'a de sens que dans le contexte → <div>. -->
+      <div class="cartes">
+
+        <article class="carte">
+          <div class="carte__media">
+            <img src="https://picsum.photos/seed/revision/600/400"
+                 alt="Vélo de ville sur un pied d'atelier, roue avant démontée"
+                 width="600" height="400" loading="lazy" decoding="async">
+          </div>
+          <div class="carte__corps">
+            <h3>Révision complète</h3>
+            <p>Freins, dérailleurs, transmission, roues, pression, serrages.
+               Le vélo repart réglé de A à Z.</p>
+            <!-- [H28] <dl> = liste de DÉFINITIONS (paires clé/valeur).
+                 <dt> = le terme, <dd> = la valeur.
+                 Parfait pour : caractéristiques, horaires, spécifications.
+                 Personne ne l'utilise, et c'est exactement la bonne balise. -->
+            <dl class="specs">
+              <dt>Durée</dt><dd>2 h</dd>
+              <dt>Garantie</dt><dd>3 mois</dd>
+            </dl>
+            <p class="carte__prix"><span>45</span> €</p>
+          </div>
+        </article>
+
+        <article class="carte carte--vedette">
+          <!-- [H29] Le badge. En CSS il sera en position:absolute, posé
+               par-dessus la carte. Voir [C46]. -->
+          <p class="badge">Le plus demandé</p>
+          <div class="carte__media">
+            <img src="https://picsum.photos/seed/transmission/600/400"
+                 alt="Cassette et chaîne de vélo nettoyées, gros plan"
+                 width="600" height="400" loading="lazy" decoding="async">
+          </div>
+          <div class="carte__corps">
+            <h3>Remise en état transmission</h3>
+            <p>Chaîne, cassette, plateaux, câbles et gaines. Pour un vélo
+               qui saute, craque ou refuse de monter les vitesses.</p>
+            <dl class="specs">
+              <dt>Durée</dt><dd>3 h</dd>
+              <dt>Garantie</dt><dd>1 an sur pièces</dd>
+            </dl>
+            <p class="carte__prix"><span>89</span> €</p>
+          </div>
+        </article>
+
+        <article class="carte">
+          <div class="carte__media">
+            <img src="https://picsum.photos/seed/roue-velo/600/400"
+                 alt="Roue de vélo en cours de dévoilage sur un pied à rayonner"
+                 width="600" height="400" loading="lazy" decoding="async">
+          </div>
+          <div class="carte__corps">
+            <h3>Dévoilage &amp; rayonnage</h3>
+            <!-- [H30] &amp; = le caractère "&". Il faut l'échapper en HTML
+                 car "&" démarre une entité. Les 4 à connaître :
+                 &amp; (&) · &lt; (<) · &gt; (>) · &nbsp; (espace insécable) -->
+            <p>Roue voilée, rayon cassé, jante fatiguée&nbsp;: on remet
+               droit ou on remonte à neuf.</p>
+            <dl class="specs">
+              <dt>Durée</dt><dd>1 h 30</dd>
+              <dt>Garantie</dt><dd>3 mois</dd>
+            </dl>
+            <p class="carte__prix"><span>35</span> €</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       TARIFS — un vrai tableau
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section section--sombre" id="tarifs" aria-labelledby="titre-tarifs">
+    <div class="conteneur">
+      <header class="section__entete">
+        <p class="eyebrow">02 — Ce que ça coûte</p>
+        <h2 id="titre-tarifs">Tarifs à la pièce</h2>
+      </header>
+
+      <!-- [H31] Le tableau. RÈGLE : un <table> sert à des DONNÉES tabulaires.
+           Jamais pour faire une mise en page (c'était les années 2000).
+           Anatomie :
+           • <caption>  = le titre du tableau, lu en premier. Souvent oublié.
+           • <thead>    = la ligne d'en-tête
+           • <th scope="col">  = en-tête de COLONNE
+           • <th scope="row">  = en-tête de LIGNE
+           • <tbody>    = le corps
+           Le scope est ce qui permet à un aveugle de comprendre le tableau. -->
+      <div class="tableau-scroll">
+        <table class="tableau">
+          <caption>Interventions courantes, main-d'œuvre incluse. Tarifs TTC au 1<sup>er</sup> janvier.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Intervention</th>
+              <th scope="col">Durée</th>
+              <th scope="col">Tarif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Réparation de crevaison</th>
+              <td>20 min</td>
+              <td class="mono">12 €</td>
+            </tr>
+            <tr>
+              <th scope="row">Réglage de freins (paire)</th>
+              <td>30 min</td>
+              <td class="mono">18 €</td>
+            </tr>
+            <tr>
+              <th scope="row">Changement de chaîne</th>
+              <td>45 min</td>
+              <td class="mono">25 €</td>
+            </tr>
+            <tr>
+              <th scope="row">Remplacement de câble et gaine</th>
+              <td>40 min</td>
+              <td class="mono">22 €</td>
+            </tr>
+            <tr>
+              <th scope="row">Montage d'un vélo neuf en carton</th>
+              <td>1 h 30</td>
+              <td class="mono">55 €</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Les pièces sont facturées en sus, toujours annoncées au devis.</p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       L'ATELIER + HORAIRES
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section" id="atelier" aria-labelledby="titre-atelier">
+    <div class="conteneur duo">
+
+      <div>
+        <p class="eyebrow">03 — Qui répare</p>
+        <h2 id="titre-atelier">Un atelier, deux mécanos, zéro baratin</h2>
+
+        <!-- [H32] Balises de texte utiles au quotidien :
+             <strong> = important (le gras a du SENS, ≠ <b> purement visuel)
+             <em>     = mise en relief (l'italique a du SENS, ≠ <i>)
+             <mark>   = surligné
+             <small>  = mentions légales, notes
+             <abbr>   = abréviation avec sa définition au survol
+             <time>   = date lisible par une machine (Google l'utilise) -->
+        <p>
+          On a ouvert en <time datetime="2019-09">septembre 2019</time>
+          dans une ancienne serrurerie. On répare <strong>tous les vélos</strong>,
+          y compris les <abbr title="Vélo à Assistance Électrique">VAE</abbr>
+          et les vieux clous que les grandes enseignes refusent.
+        </p>
+        <p>
+          Notre principe&nbsp;: <em>on ne remplace jamais une pièce qui peut
+          être réglée</em>. Un vélo qui repart pour 12 € nous rapporte moins,
+          mais vous revenez.
+        </p>
+
+        <!-- [H33] <blockquote> = citation longue, avec <cite> pour la source.
+             L'attribut cite="URL" pointe vers l'origine si elle existe. -->
+        <blockquote class="citation">
+          <p>Ils ont réglé en dix minutes ce que deux magasins voulaient me
+             facturer 200 € en changeant tout.</p>
+          <footer>— <cite>Sarah M.</cite>, cliente depuis 2021</footer>
+        </blockquote>
+      </div>
+
+      <aside class="encart">
+        <!-- [H34] <aside> = contenu lié mais secondaire. Encadré, barre latérale.
+             Ce n'est PAS "à droite" — c'est "à côté du propos principal". -->
+        <h3>Horaires</h3>
+        <!-- Encore un <dl> : jour → créneau. La bonne balise. -->
+        <dl class="horaires">
+          <dt>Mardi – Vendredi</dt>   <dd><time>9h – 18h30</time></dd>
+          <dt>Samedi</dt>             <dd><time>9h – 17h</time></dd>
+          <dt>Dimanche – Lundi</dt>   <dd class="ferme">Fermé</dd>
+        </dl>
+
+        <h3>Adresse</h3>
+        <!-- [H35] <address> = les coordonnées de contact du propriétaire
+             de la page ou de l'article. Pas pour une adresse quelconque. -->
+        <address>
+          14 rue des Rayons<br>
+          44000 Nantes<br>
+          <a href="tel:+33240000000">02 40 00 00 00</a><br>
+          <a href="mailto:bonjour@atelierdesrayons.fr">bonjour@atelierdesrayons.fr</a>
+        </address>
+
+        <!-- [H36] iframe Google Maps — indispensable pour un commerce local.
+             title est OBLIGATOIRE (sinon le lecteur d'écran annonce "cadre").
+             loading="lazy" évite de charger la carte tant qu'on ne scrolle pas. -->
+        <iframe
+          class="carte-map"
+          title="Emplacement de l'atelier sur une carte"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-1.565%2C47.208%2C-1.535%2C47.225&amp;layer=mapnik"
+          loading="lazy"></iframe>
+      </aside>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       GALERIE
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section" aria-labelledby="titre-galerie">
+    <div class="conteneur">
+      <header class="section__entete">
+        <p class="eyebrow">04 — Avant / après</p>
+        <h2 id="titre-galerie">Passages à l'atelier</h2>
+      </header>
+
+      <!-- [H37] Une galerie est une LISTE d'images. <ul> + <li>.
+           Les images ont des proportions DIFFÉRENTES exprès :
+           le CSS object-fit va les uniformiser. Voir [C40]. -->
+      <ul class="galerie">
+        <li><img src="https://picsum.photos/seed/g1/600/900" alt="Cadre de vélo de course repeint en vert" width="600" height="900" loading="lazy"></li>
+        <li><img src="https://picsum.photos/seed/g2/900/600" alt="Établi couvert d'outils de mécanique cycle" width="900" height="600" loading="lazy"></li>
+        <li><img src="https://picsum.photos/seed/g3/700/700" alt="Roue arrière avec cassette neuve montée" width="700" height="700" loading="lazy"></li>
+        <li><img src="https://picsum.photos/seed/g4/600/800" alt="Vélo cargo en cours de révision" width="600" height="800" loading="lazy"></li>
+        <li><img src="https://picsum.photos/seed/g5/1000/600" alt="Vitrine de l'atelier vue depuis la rue" width="1000" height="600" loading="lazy"></li>
+        <li><img src="https://picsum.photos/seed/g6/650/850" alt="Détail d'un guidon rehaussé de ruban neuf" width="650" height="850" loading="lazy"></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       [H38] FAQ — L'ACCORDÉON SANS UNE LIGNE DE JAVASCRIPT
+       <details> + <summary> : le navigateur gère l'ouverture/fermeture,
+       le clavier, et l'accessibilité. Gratuitement.
+       Ajoute l'attribut "open" pour qu'un panneau soit déplié au départ.
+       🔧 ESSAIE : ajoute name="faq" sur chaque <details> → ils deviennent
+       exclusifs (ouvrir l'un ferme les autres). Un vrai accordéon, 0 ligne de JS.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section section--sombre" id="faq" aria-labelledby="titre-faq">
+    <div class="conteneur conteneur--etroit">
+      <header class="section__entete">
+        <p class="eyebrow">05 — Questions fréquentes</p>
+        <h2 id="titre-faq">Ce qu'on nous demande tout le temps</h2>
+      </header>
+
+      <details class="faq" open>
+        <summary>Faut-il prendre rendez-vous&nbsp;?</summary>
+        <p>Pour une crevaison ou un réglage rapide, passez directement.
+           Pour une révision, le rendez-vous évite d'attendre&nbsp;: on
+           bloque le pied d'atelier pour vous.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Réparez-vous les vélos électriques&nbsp;?</summary>
+        <p>Oui, partie cycle et diagnostic électrique. Nous ne touchons pas
+           aux batteries scellées&nbsp;: c'est le rôle du fabricant.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Combien de temps pour récupérer mon vélo&nbsp;?</summary>
+        <p>48 h en moyenne. Si une pièce doit être commandée, on vous le dit
+           au devis, avec la date.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Le diagnostic est-il vraiment gratuit&nbsp;?</summary>
+        <p>Oui, sans condition. Vous repartez avec un devis écrit, libre à
+           vous de le faire ailleurs.</p>
+      </details>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       [H39] LE FORMULAIRE — la partie qui rapporte de l'argent.
+       Un formulaire qui marche, c'est ce que le client achète vraiment.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section" id="rdv" aria-labelledby="titre-rdv">
+    <div class="conteneur conteneur--etroit">
+      <header class="section__entete">
+        <p class="eyebrow">06 — On s'occupe de vous</p>
+        <h2 id="titre-rdv">Demander un rendez-vous</h2>
+        <p class="section__intro">Réponse sous 24 h ouvrées. Aucun engagement.</p>
+      </header>
+
+      <!-- [H40] <form> — deux attributs :
+           action = où partent les données  |  method = "get" ou "post"
+           (post pour tout ce qui n'est pas une recherche).
+           Sans backend, Netlify Forms fait le travail : tu ajoutes
+           data-netlify="true" et tu reçois les messages par email. -->
+      <form class="formulaire" action="#" method="post">
+
+        <!-- [H41] <fieldset> + <legend> = regrouper des champs liés.
+             Le lecteur d'écran annonce la légende avant chaque champ du groupe.
+             INDISPENSABLE pour les groupes de radios. -->
+        <fieldset>
+          <legend>Vos coordonnées</legend>
+
+          <div class="champ">
+            <!-- [H42] LE LABEL. La règle la plus importante des formulaires :
+                 label for="X" doit correspondre EXACTEMENT à input id="X".
+                 Ça permet de cliquer sur le texte pour activer le champ
+                 (crucial sur mobile, les cases à cocher font 15px).
+                 Un placeholder N'EST PAS un label : il disparaît à la saisie. -->
+            <label for="nom">Nom et prénom</label>
+            <!-- autocomplete = le navigateur propose les infos enregistrées.
+                 Nom exact obligatoire (name, email, tel, street-address...). -->
+            <input type="text" id="nom" name="nom"
+                   autocomplete="name" required
+                   placeholder="Camille Dupont">
+          </div>
+
+          <div class="grille-champs">
+            <div class="champ">
+              <label for="email">Email</label>
+              <!-- type="email" → clavier @ sur mobile + validation native -->
+              <input type="email" id="email" name="email"
+                     autocomplete="email" required
+                     placeholder="camille@exemple.fr">
+              <!-- [H43] Message d'aide relié au champ par aria-describedby :
+                   il est LU par les lecteurs d'écran quand on entre dans le champ. -->
+              <small class="aide" id="aide-email">On ne s'en sert que pour vous répondre.</small>
+            </div>
+
+            <div class="champ">
+              <label for="tel">Téléphone</label>
+              <!-- type="tel" → clavier numérique sur mobile.
+                   Attention : type="tel" ne valide RIEN tout seul.
+                   pattern = expression régulière de validation. -->
+              <input type="tel" id="tel" name="tel"
+                     autocomplete="tel"
+                     pattern="[0-9\s]{10,14}"
+                     placeholder="06 12 34 56 78">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Votre vélo</legend>
+
+          <div class="grille-champs">
+            <div class="champ">
+              <label for="type-velo">Type de vélo</label>
+              <!-- [H44] <select> + <optgroup> pour grouper les options.
+                   La 1re option vide + disabled force un choix conscient. -->
+              <select id="type-velo" name="type-velo" required>
+                <option value="" disabled selected>Choisissez…</option>
+                <optgroup label="Musculaire">
+                  <option value="ville">Vélo de ville</option>
+                  <option value="route">Vélo de route</option>
+                  <option value="vtt">VTT</option>
+                </optgroup>
+                <optgroup label="Électrique">
+                  <option value="vae-ville">VAE de ville</option>
+                  <option value="cargo">Vélo cargo</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="champ">
+              <label for="marque">Marque</label>
+              <!-- [H45] <datalist> = suggestions, MAIS champ libre.
+                   Le meilleur des deux mondes. Très peu connu, très pratique. -->
+              <input type="text" id="marque" name="marque" list="marques"
+                     placeholder="Tapez ou choisissez">
+              <datalist id="marques">
+                <option value="Btwin"></option>
+                <option value="Gitane"></option>
+                <option value="Peugeot"></option>
+                <option value="Moustache"></option>
+                <option value="Je ne sais pas"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <div class="grille-champs">
+            <div class="champ">
+              <label for="date">Date souhaitée</label>
+              <!-- type="date" → calendrier natif. min/max bornent le choix. -->
+              <input type="date" id="date" name="date" min="2026-01-01" required>
+            </div>
+            <div class="champ">
+              <label for="creneau">Créneau</label>
+              <select id="creneau" name="creneau">
+                <option>Matin (9h – 12h)</option>
+                <option>Après-midi (14h – 18h)</option>
+                <option>Indifférent</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- [H46] GROUPE DE BOUTONS RADIO.
+               • Même name = ils s'excluent mutuellement. C'est le name qui
+                 les relie, pas leur position dans le HTML.
+               • id différents pour les labels.
+               • Toujours dans un fieldset avec legend. -->
+          <fieldset class="sous-groupe">
+            <legend>Urgence</legend>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="urgence" value="normal" checked>
+                <span>Pas pressé</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="urgence" value="semaine">
+                <span>Dans la semaine</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="urgence" value="urgent">
+                <span>Urgent (+15 €)</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="champ">
+            <label for="budget">Budget maximum : <output id="sortie-budget" for="budget">100</output> €</label>
+            <!-- [H47] type="range" + <output>. L'output affichera la valeur
+                 quand tu brancheras 3 lignes de JS (Jour 16 de ta roadmap).
+                 Pour l'instant il montre juste la valeur de départ. -->
+            <input type="range" id="budget" name="budget" min="20" max="400" step="10" value="100">
+          </div>
+
+          <div class="champ">
+            <label for="message">Décrivez le problème</label>
+            <!-- [H48] <textarea> : la taille se règle en CSS, pas avec rows/cols.
+                 ATTENTION : pas de balise auto-fermante, et surtout AUCUN
+                 espace entre <textarea> et </textarea> — sinon le champ
+                 contient des espaces au chargement. -->
+            <textarea id="message" name="message" rows="4"
+                      placeholder="« Ça saute quand je pédale en côte, et le frein arrière frotte. »"></textarea>
+          </div>
+        </fieldset>
+
+        <!-- [H49] Case à cocher. Le RGPD la rend obligatoire dès que tu
+             collectes un email. Le label ENGLOBE l'input : toute la phrase
+             devient cliquable. C'est la meilleure façon de faire. -->
+        <label class="case">
+          <input type="checkbox" name="rgpd" required>
+          <span>J'accepte que mes coordonnées soient utilisées pour me
+                répondre. <a href="#">Politique de confidentialité</a>.</span>
+        </label>
+
+        <!-- [H50] LES BOUTONS — type explicite, TOUJOURS.
+             type="submit" → envoie   |   type="reset" → vide (à éviter)
+             type="button" → ne fait rien, réservé au JavaScript.
+             Un <button> sans type vaut "submit" : dans un formulaire, un
+             bouton "Ajouter une ligne" sans type envoie le formulaire.
+             C'est un bug classique et très pénible. -->
+        <div class="formulaire__actions">
+          <button type="submit" class="btn btn--principal">Envoyer la demande</button>
+          <button type="reset" class="btn btn--fantome">Effacer</button>
+        </div>
+        <p class="note">Champs marqués <span class="requis">*</span> obligatoires.</p>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       [H51] LE LABORATOIRE
+       Ces sections n'existeraient pas sur un vrai site client.
+       Elles sont là pour que tu VOIES la différence, côte à côte.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="section labo" id="labo" aria-labelledby="titre-labo">
+    <div class="conteneur">
+      <header class="section__entete">
+        <p class="eyebrow">Laboratoire</p>
+        <h2 id="titre-labo">Les démos qui font comprendre</h2>
+        <p class="section__intro">
+          Six comparaisons visuelles. Ouvre DevTools (F12), sélectionne les
+          éléments, change les valeurs en direct.
+        </p>
+      </header>
+
+      <!-- DÉMO 1 : box-sizing -->
+      <article class="demo">
+        <h3><span class="demo__num">1</span> box-sizing : la ligne qui sauve ta vie</h3>
+        <p class="demo__legende">Les deux boîtes ont <code>width: 200px</code>,
+           <code>padding: 24px</code>, <code>border: 6px</code>. Mesure-les.</p>
+        <div class="demo__scene">
+          <div class="bs bs--content">
+            <span>content-box<br>= 200 + 48 + 12 = <b>260px</b></span>
+          </div>
+          <div class="bs bs--border">
+            <span>border-box<br>= <b>200px</b> pile</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- DÉMO 2 : inline / block / inline-block -->
+      <article class="demo">
+        <h3><span class="demo__num">2</span> inline · block · inline-block</h3>
+        <p class="demo__legende">Les trois ont le même CSS
+           (<code>width: 180px; padding: 20px</code>). Un seul l'ignore.</p>
+        <div class="demo__scene demo__scene--colonne">
+          <p class="ligne-demo">
+            Texte normal
+            <span class="d d--inline">inline (width ignoré)</span>
+            qui continue.
+          </p>
+          <p class="ligne-demo">
+            Texte normal
+            <span class="d d--inline-block">inline-block (width OK)</span>
+            qui continue.
+          </p>
+          <p class="ligne-demo">
+            Texte normal
+            <span class="d d--block">block (prend toute la ligne)</span>
+            qui continue.
+          </p>
+        </div>
+      </article>
+
+      <!-- DÉMO 3 : justify-content -->
+      <article class="demo">
+        <h3><span class="demo__num">3</span> justify-content : les 6 valeurs</h3>
+        <p class="demo__legende">Même HTML, même <code>display: flex</code>.
+           Seule cette propriété change.</p>
+        <div class="demo__scene demo__scene--colonne">
+          <div class="jc jc--start"><span>A</span><span>B</span><span>C</span><em>flex-start</em></div>
+          <div class="jc jc--center"><span>A</span><span>B</span><span>C</span><em>center</em></div>
+          <div class="jc jc--end"><span>A</span><span>B</span><span>C</span><em>flex-end</em></div>
+          <div class="jc jc--between"><span>A</span><span>B</span><span>C</span><em>space-between</em></div>
+          <div class="jc jc--around"><span>A</span><span>B</span><span>C</span><em>space-around</em></div>
+          <div class="jc jc--evenly"><span>A</span><span>B</span><span>C</span><em>space-evenly</em></div>
+        </div>
+      </article>
+
+      <!-- DÉMO 4 : les unités -->
+      <article class="demo">
+        <h3><span class="demo__num">4</span> px · rem · % · vw</h3>
+        <p class="demo__legende">
+          <strong>Redimensionne ta fenêtre</strong> et regarde qui bouge.
+          Puis change la taille de police du navigateur (Ctrl + molette)
+          et regarde qui bouge cette fois.</p>
+        <div class="demo__scene demo__scene--colonne unites">
+          <div class="u u--px">width: 320px<span>ne bouge jamais</span></div>
+          <div class="u u--rem">width: 20rem<span>bouge avec la taille du texte</span></div>
+          <div class="u u--pct">width: 60%<span>bouge avec le parent</span></div>
+          <div class="u u--vw">width: 40vw<span>bouge avec la fenêtre</span></div>
+        </div>
+      </article>
+
+      <!-- DÉMO 5 : position -->
+      <article class="demo">
+        <h3><span class="demo__num">5</span> position : le duo relative / absolute</h3>
+        <p class="demo__legende">Le carré jaune est en <code>absolute</code>.
+           Il se cale sur le premier parent <code>relative</code> — pas sur la page.</p>
+        <div class="demo__scene">
+          <div class="pos pos--sans">
+            <span class="pos__etiquette">parent SANS relative</span>
+            <div class="pos__enfant">je pars ailleurs</div>
+          </div>
+          <div class="pos pos--avec">
+            <span class="pos__etiquette">parent AVEC relative</span>
+            <div class="pos__enfant">je reste dedans</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- DÉMO 6 : spécificité -->
+      <article class="demo">
+        <h3><span class="demo__num">6</span> Spécificité : qui gagne ?</h3>
+        <p class="demo__legende">Ce paragraphe est visé par 4 règles.
+           Ouvre DevTools sur lui : les règles perdantes sont
+           <s>barrées</s>. C'est le meilleur cours de spécificité qui existe.</p>
+        <div class="demo__scene" id="zone-spec">
+          <p class="cible">Devine ma couleur avant de regarder.</p>
+        </div>
+        <p class="demo__legende mono">
+          p.cible (0,1,1) · .demo__scene p (0,1,1) · div p (0,0,2) · #zone-spec .cible (1,1,0)
+        </p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     [H52] <footer> — le pied de page.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<footer class="pied">
+  <div class="conteneur pied__grille">
+
+    <div>
+      <p class="logo logo--pied">
+        <span class="logo__roue" aria-hidden="true"></span>
+        <span class="logo__texte">L'Atelier<strong>des Rayons</strong></span>
+      </p>
+      <p class="pied__baseline">Réparation et entretien de cycles depuis 2019.<br>
+         14 rue des Rayons, 44000 Nantes.</p>
+    </div>
+
+    <nav aria-label="Liens de pied de page">
+      <h2 class="pied__titre">Le site</h2>
+      <ul class="pied__liens">
+        <li><a href="#prestations">Prestations</a></li>
+        <li><a href="#tarifs">Tarifs</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#rdv">Prendre RDV</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="pied__titre">Ailleurs</h2>
+      <ul class="pied__liens">
+        <!-- [H53] LIEN EXTERNE : target="_blank" ouvre un nouvel onglet,
+             rel="noopener noreferrer" est OBLIGATOIRE avec.
+             Sans lui, la page ouverte peut manipuler la tienne (faille
+             de sécurité réelle, "tabnabbing").
+             Le CSS ajoutera une flèche automatiquement — voir [C57]. -->
+        <li><a href="https://www.openstreetmap.org" target="_blank" rel="noopener noreferrer">Nous situer</a></li>
+        <li><a href="https://fr.wikipedia.org/wiki/Bicyclette" target="_blank" rel="noopener noreferrer">Histoire du vélo</a></li>
+        <li><a href="mailto:bonjour@atelierdesrayons.fr">Nous écrire</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="conteneur pied__bas">
+    <!-- &copy; = © · Et un <time> pour l'année, tant qu'à faire. -->
+    <small>&copy; <time datetime="2026">2026</time> L'Atelier des Rayons — Tous droits réservés.</small>
+    <small><a href="#">Mentions légales</a> · <a href="#">Confidentialité</a></small>
+  </div>
+</footer>
+
+<!-- [H54] Bouton flottant en position: fixed. Voir [C48].
+     C'est un lien vers l'ancre #contenu : ça marche sans JavaScript. -->
+<a href="#contenu" class="retour-haut" aria-label="Revenir en haut de la page">↑</a>
+
+</body>
+</html>

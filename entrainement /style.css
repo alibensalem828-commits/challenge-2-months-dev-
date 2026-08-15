@@ -1,0 +1,1594 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C00]  L'ATELIER DES RAYONS — feuille de style d'apprentissage
+   ═══════════════════════════════════════════════════════════════════════════
+
+   PLAN DU FICHIER (Ctrl+F sur un code pour y sauter)
+   --------------------------------------------------
+   [C01] Reset                     [C30] Grille de cartes
+   [C02] Variables (design tokens) [C40] Images : object-fit
+   [C03] Typographie de base       [C45] Position : relative/absolute/fixed/sticky
+   [C10] Utilitaires               [C50] Formulaires
+   [C15] Sélecteurs : le tour      [C55] Pseudo-classes & pseudo-éléments
+   [C20] Boutons                   [C60] Transitions & animations
+   [C25] Flexbox : la navbar       [C70] Le laboratoire
+                                   [C80] Responsive (media queries)
+                                   [C90] Mode sombre & accessibilité
+
+   RÈGLE : chaque 🔧 ESSAIE est un mini-exercice. Fais-les.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C01] LE RESET
+   Les navigateurs appliquent leurs propres styles par défaut, et ils ne sont
+   pas identiques. On repart d'une base neutre et connue.
+   Ces ~25 lignes vont en haut de CHAQUE projet que tu feras.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C01a] Le sélecteur universel * vise TOUT.
+   ::before et ::after sont des pseudo-éléments : * ne les couvre pas,
+   il faut les nommer. D'où les trois sélecteurs.
+   box-sizing: border-box → width inclut padding et border. LA ligne. */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* [C01b] Défilement fluide sur les ancres (#tarifs, #faq...) */
+  scroll-behavior: smooth;
+  /* scroll-padding-top compense la navbar sticky : sans lui, le titre
+     visé se cache DERRIÈRE la navbar. Valeur = hauteur de la navbar. */
+  scroll-padding-top: 6rem;
+  /* -webkit-text-size-adjust empêche iOS de grossir le texte tout seul
+     quand on tourne le téléphone en paysage. */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* [C01c] Les médias sont fluides par défaut.
+   max-width:100% → ne dépasse jamais son parent (fin du scroll horizontal).
+   height:auto    → garde les proportions.
+   display:block  → supprime l'espace fantôme sous les images (les images
+                    sont inline par défaut et s'alignent sur la ligne de base
+                    du texte, ce qui laisse ~4px de vide inexpliqué). */
+img,
+picture,
+video,
+svg,
+iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* [C01d] Les champs de formulaire N'HÉRITENT PAS de la police du body.
+   C'est LA raison pour laquelle un formulaire non stylé a l'air cassé.
+   🔧 ESSAIE : commente cette règle et regarde le formulaire. */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* [C01e] Les titres ont besoin d'un line-height serré (1.1–1.2).
+   Le 1.6 du body est fait pour du texte courant, pas pour du 48px. */
+h1, h2, h3, h4 {
+  line-height: 1.15;
+  text-wrap: balance;   /* équilibre les lignes d'un titre, évite le mot orphelin */
+}
+
+p {
+  text-wrap: pretty;    /* évite le mot seul sur la dernière ligne */
+}
+
+/* [C01f] On enlève les puces UNIQUEMENT sur les listes qui ont une classe.
+   Astuce : ul[class] cible les <ul class="..."> et laisse tranquilles
+   les listes de contenu rédactionnel, qui doivent garder leurs puces. */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C02] LES VARIABLES CSS (design tokens)
+   :root = l'élément <html>. Les variables déclarées ici sont dispo partout.
+   C'est ce qui rend un CSS maintenable : le client dit "finalement du bleu",
+   tu changes UNE ligne au lieu de 40.
+   🔧 ESSAIE : change --accent en hsl(150 70% 45%). Tout le site suit.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* --- Couleurs -----------------------------------------------------------
+     Notation HSL : Teinte (0-360°) Saturation (%) Luminosité (%).
+     Son intérêt : pour créer une variante, tu ne changes QUE la luminosité.
+     En hexadécimal, tu devrais deviner un nouveau code au hasard. */
+  --encre:        hsl(211 30% 13%);   /* fond sombre, texte principal */
+  --encre-doux:   hsl(211 25% 22%);
+  --papier:       hsl(200 20% 96%);   /* fond clair */
+  --blanc:        hsl(0 0% 100%);
+  --acier:        hsl(211 12% 42%);   /* texte secondaire */
+  --acier-clair:  hsl(211 18% 88%);   /* bordures */
+
+  --accent:       hsl(46 100% 56%);   /* le jaune haute-visibilité de l'atelier */
+  --accent-fonce: hsl(42 90% 46%);
+  --craie:        hsl(195 65% 47%);   /* le bleu des annotations techniques */
+
+  --succes:       hsl(150 60% 36%);
+  --erreur:       hsl(0 70% 48%);
+
+  /* --- Typographie -------------------------------------------------------- */
+  --police:       'Archivo', system-ui, -apple-system, sans-serif;
+  --police-mono:  'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+
+  /* clamp(min, idéal, max) : une taille fluide SANS media query.
+     Le titre fait 6vw, mais jamais moins de 2.5rem ni plus de 5rem. */
+  --taille-h1:    clamp(2.5rem, 6vw, 5rem);
+  --taille-h2:    clamp(1.75rem, 3.5vw, 2.75rem);
+  --taille-h3:    1.25rem;
+
+  /* --- Espacements --------------------------------------------------------
+     Une échelle, pas des valeurs au hasard. Tout le site respire pareil. */
+  --esp-xs: 0.5rem;    /*  8px */
+  --esp-sm: 1rem;      /* 16px */
+  --esp-md: 1.5rem;    /* 24px */
+  --esp-lg: 3rem;      /* 48px */
+  --esp-xl: 6rem;      /* 96px */
+
+  /* --- Divers ------------------------------------------------------------- */
+  --rayon:      4px;
+  --rayon-lg:   10px;
+  --largeur-max: 1180px;
+
+  /* Ombres : beaucoup de flou, peu d'opacité, léger décalage vers le bas
+     (la lumière vient d'en haut). Une ombre noire à 50 % = amateur. */
+  --ombre-sm: 0 1px 3px hsl(211 30% 13% / 0.10);
+  --ombre-md: 0 6px 20px hsl(211 30% 13% / 0.10);
+  --ombre-lg: 0 18px 45px hsl(211 30% 13% / 0.16);
+
+  --transition: 200ms cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C03] TYPOGRAPHIE DE BASE
+   On pose la typo UNE fois sur body. Tout en hérite (color, font-family,
+   line-height et font-size sont des propriétés héritées).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--police);
+  font-size: 1rem;              /* = 16px. Jamais moins pour du corps de texte. */
+  line-height: 1.65;            /* SANS unité : se recalcule pour chaque élément */
+  color: var(--encre);
+  background: var(--papier);
+  -webkit-font-smoothing: antialiased;  /* rendu plus fin sur Mac */
+}
+
+h1 { font-size: var(--taille-h1); font-weight: 800; letter-spacing: -0.03em; }
+h2 { font-size: var(--taille-h2); font-weight: 800; letter-spacing: -0.02em; }
+h3 { font-size: var(--taille-h3); font-weight: 600; }
+
+/* [C03a] Longueur de ligne : au-delà de ~75 caractères, l'œil perd sa ligne
+   en revenant à gauche. L'unité "ch" = la largeur du caractère « 0 ». */
+p { max-width: 68ch; }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--craie);
+  text-underline-offset: 3px;   /* décolle le soulignement du texte */
+  transition: color var(--transition);
+}
+a:hover { color: var(--craie); }
+
+strong { font-weight: 800; }
+
+code,
+.mono {
+  font-family: var(--police-mono);
+  font-size: 0.875em;   /* "em" ici : proportionnel au texte autour */
+}
+
+code {
+  background: hsl(211 30% 13% / 0.07);
+  padding: 0.15em 0.4em;
+  border-radius: var(--rayon);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C10] LES UTILITAIRES
+   Des classes réutilisables partout. C'est la base de tout système de design.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C10a] LE CONTENEUR — le combo le plus utilisé du web.
+   width:100%       → prend toute la place disponible
+   max-width        → mais s'arrête à 1180px sur grand écran
+   margin-inline:auto → se centre (auto absorbe l'espace des deux côtés)
+   padding-inline   → ne colle pas aux bords sur mobile
+   "inline" = axe horizontal en écriture latine (propriétés logiques). */
+.conteneur {
+  width: 100%;
+  max-width: var(--largeur-max);
+  margin-inline: auto;
+  padding-inline: var(--esp-md);
+}
+.conteneur--etroit { max-width: 760px; }
+
+/* [C10b] L'eyebrow : le petit label au-dessus des titres.
+   Majuscules + letter-spacing : les capitales ont besoin d'air. */
+.eyebrow {
+  font-family: var(--police-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--craie);
+  margin-bottom: var(--esp-sm);
+}
+
+.note {
+  font-size: 0.875rem;
+  color: var(--acier);
+  margin-top: var(--esp-md);
+}
+
+/* [C10c] .sr-only — "screen reader only".
+   Visuellement invisible, MAIS lu par les lecteurs d'écran.
+   Différent de display:none, qui cache pour tout le monde.
+   Usage : libellés de champs de recherche, textes de contexte. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* [C10d] Le skip link : caché au-dessus de l'écran, il redescend au focus.
+   🔧 ESSAIE : clique dans la page puis appuie sur Tab. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--esp-sm);
+  z-index: 999;
+  background: var(--encre);
+  color: var(--blanc);
+  padding: var(--esp-sm) var(--esp-md);
+  border-radius: 0 0 var(--rayon) var(--rayon);
+  transition: top var(--transition);
+}
+.skip-link:focus { top: 0; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C15] LE TOUR DES SÉLECTEURS
+   Tous les types que tu utiliseras. Lis-les, ils sont tous à l'œuvre plus bas.
+
+     h2                    → type (toutes les balises h2)
+     .carte                → classe          ← 95 % de ton CSS
+     #zone-spec            → id (unique)     ← à réserver aux ancres et au JS
+     *                     → tout
+     h1, h2, h3            → groupe (les trois)
+
+     .carte p              → DESCENDANT : les p n'importe où dans .carte
+     .carte > p            → ENFANT DIRECT : seulement au 1er niveau
+     h2 + p                → FRÈRE ADJACENT : le p juste après un h2
+     h2 ~ p                → FRÈRES SUIVANTS : tous les p après un h2
+
+     a.btn                 → COLLÉ : un <a> QUI A la classe btn (1 élément)
+     a .btn                → ESPACE : un .btn DANS un <a>       (2 éléments)
+     .carte.carte--vedette → les DEUX classes sur le même élément
+
+     input[type="email"]   → attribut, valeur exacte
+     a[href^="https"]      → ^ commence par
+     a[href$=".pdf"]       → $ finit par
+     a[href*="nantes"]     → * contient
+     [aria-current]        → a simplement cet attribut
+
+   SPÉCIFICITÉ : score (id, classe, type), comparé case par case
+   de GAUCHE à DROITE. Une classe bat n'importe quel nombre de balises.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C20] LES BOUTONS
+   Un composant + ses variantes. C'est le modèle BEM :
+   .btn (bloc) · .btn--principal (modificateur) · .btn__icone (élément)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.btn {
+  /* [C20a] inline-flex : reste dans la ligne comme un inline, MAIS accepte
+     width/height/padding, ET peut centrer son contenu comme un flex.
+     Le meilleur des deux mondes pour un bouton. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-xs);
+
+  /* min-height 44px : la taille minimale d'une zone tactile confortable
+     (recommandation Apple et Google). Un bouton de 30px se rate au pouce. */
+  min-height: 44px;
+  padding: 0.7rem 1.5rem;
+
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  white-space: nowrap;          /* le libellé ne se coupe jamais en deux */
+  border: 2px solid transparent;
+  border-radius: var(--rayon);
+
+  /* On nomme les propriétés animées. JAMAIS "transition: all" :
+     ça force le navigateur à surveiller tout, et ça produit des effets
+     involontaires le jour où tu ajoutes une propriété. */
+  transition: background-color var(--transition),
+              border-color var(--transition),
+              color var(--transition),
+              transform var(--transition),
+              box-shadow var(--transition);
+}
+
+.btn--principal {
+  background: var(--accent);
+  color: var(--encre);
+  box-shadow: var(--ombre-sm);
+}
+.btn--principal:hover {
+  background: var(--accent-fonce);
+  transform: translateY(-2px);   /* transform : le navigateur l'anime sur la
+                                    carte graphique. Fluide. Contrairement à
+                                    top/margin, qui recalculent toute la page. */
+  box-shadow: var(--ombre-md);
+}
+
+.btn--fantome {
+  border-color: currentColor;    /* currentColor = la valeur actuelle de color.
+                                    La bordure suit le texte automatiquement. */
+  color: var(--encre);
+}
+.btn--fantome:hover {
+  background: var(--encre);
+  color: var(--blanc);
+}
+
+.btn--compact {
+  background: var(--accent);
+  color: var(--encre);
+  min-height: 38px;
+  padding: 0.4rem 1rem;
+}
+
+/* [C20b] :active = pendant le clic. Un micro-enfoncement rend le bouton vivant. */
+.btn:active { transform: translateY(0) scale(0.985); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C25] FLEXBOX — L'EN-TÊTE ET LA NAVIGATION
+   Flexbox aligne sur UNE dimension. C'est l'outil du contenu et des barres.
+
+   LA PHRASE À RETENIR :
+     justify-content = axe PRINCIPAL   |   align-items = axe SECONDAIRE
+     En flex-direction:row (défaut) → principal = horizontal
+     En flex-direction:column       → principal = vertical (tout s'inverse !)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C25a] position:sticky — défile normalement puis se fige.
+   DEUX conditions, sinon ça ne marche pas :
+     1. un "top" (ou bottom/left/right) défini
+     2. aucun parent en overflow:hidden
+   C'est la cause n°1 des "mon sticky ne marche pas". */
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: hsl(200 20% 96% / 0.88);
+  backdrop-filter: blur(12px);   /* floute ce qui passe DERRIÈRE. Effet "verre". */
+  border-bottom: 1px solid var(--acier-clair);
+}
+
+/* [C25b] LA NAVBAR : le patron le plus utilisé du web.
+   space-between = premier à gauche, dernier à droite, espace au milieu. */
+.entete__interieur {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--esp-md);
+  padding-block: 0.75rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.logo__texte strong { color: var(--craie); font-weight: 800; }
+.logo__texte { display: flex; flex-direction: column; line-height: 1.05; font-size: 0.95rem; }
+
+/* [C25c] Une roue dessinée en CSS pur : un cercle + un dégradé conique
+   pour les rayons. Aucune image, aucun poids. */
+.logo__roue {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;            /* 50% sur un carré = cercle parfait */
+  border: 3px solid var(--encre);
+  background: conic-gradient(
+    from 0deg,
+    var(--accent) 0 8deg, transparent 8deg 45deg,
+    var(--accent) 45deg 53deg, transparent 53deg 90deg,
+    var(--accent) 90deg 98deg, transparent 98deg 135deg,
+    var(--accent) 135deg 143deg, transparent 143deg 180deg,
+    var(--accent) 180deg 188deg, transparent 188deg 225deg,
+    var(--accent) 225deg 233deg, transparent 233deg 270deg,
+    var(--accent) 270deg 278deg, transparent 278deg 315deg,
+    var(--accent) 315deg 323deg, transparent 323deg 360deg
+  );
+  flex-shrink: 0;                /* ne rétrécit JAMAIS, même si ça serre */
+}
+
+.nav__liste {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-md);            /* gap : jamais d'espace aux extrémités,
+                                    contrairement aux margin qu'il faut
+                                    ensuite corriger avec :last-child. */
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.nav__liste a { text-decoration: none; }
+
+/* [C25d] SÉLECTEUR D'ATTRIBUT : cible le lien marqué aria-current="page".
+   Le HTML porte l'information, le CSS ne fait que la styler.
+   C'est la bonne façon : pas de classe "active" en double. */
+.nav__liste a[aria-current="page"] {
+  color: var(--craie);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C28] LE HERO — première utilisation de CSS GRID
+   Grid gère DEUX dimensions. C'est l'outil de la mise en page.
+   Résumé : Flexbox pour le contenu, Grid pour la structure.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero {
+  padding-block: var(--esp-xl) var(--esp-lg);
+  /* Un fond "papier millimétré" en CSS pur : deux dégradés répétés.
+     background-size définit la taille de la maille. */
+  background-image:
+    linear-gradient(hsl(211 30% 13% / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(211 30% 13% / 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow: hidden;              /* les cotes décoratives ne débordent pas */
+}
+
+.hero__grille {
+  display: grid;
+  /* 1.15fr 0.85fr : la colonne texte est un peu plus large que l'image.
+     "fr" = fraction de l'espace DISPONIBLE. */
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--esp-lg);
+  align-items: center;
+  position: relative;            /* repère pour la cote en absolute [C45] */
+}
+
+.hero__titre { margin-block: var(--esp-sm) var(--esp-md); }
+
+/* [C28a] Le surlignage du titre : un dégradé qui ne colore que le bas.
+   background-size + no-repeat : la bande fait 100% de large et 0.35em de haut,
+   posée en bas à gauche. Trois lignes, effet "marqueur". */
+.souligne {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 100% 0.32em;
+  background-position: 0 88%;
+  background-repeat: no-repeat;
+}
+
+.hero__accroche {
+  font-size: 1.125rem;
+  color: var(--acier);
+  margin-bottom: var(--esp-md);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;               /* passe à la ligne sur mobile au lieu de déborder */
+  gap: var(--esp-sm);
+  margin-bottom: var(--esp-md);
+}
+
+.hero__preuves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-sm) var(--esp-md);   /* gap: <vertical> <horizontal> */
+  font-size: 0.875rem;
+  color: var(--acier);
+  font-weight: 600;
+}
+/* [C28b] ::before = un pseudo-élément généré par le CSS. content est
+   OBLIGATOIRE, même vide, sinon rien ne s'affiche. */
+.hero__preuves li::before {
+  content: "✓";
+  color: var(--succes);
+  font-weight: 800;
+  margin-right: 0.35rem;
+}
+
+.hero__visuel {
+  position: relative;
+  border-radius: var(--rayon-lg);
+  overflow: hidden;              /* l'image respecte les coins arrondis */
+  box-shadow: var(--ombre-lg);
+}
+.hero__visuel img {
+  width: 100%;
+  aspect-ratio: 4 / 5;           /* réserve la place AVANT le chargement :
+                                    la page ne saute pas (métrique CLS) */
+  object-fit: cover;
+}
+.hero__visuel figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--esp-sm);
+  background: linear-gradient(transparent, hsl(211 30% 13% / 0.85));
+  color: var(--blanc);
+  font-size: 0.8125rem;
+  font-family: var(--police-mono);
+}
+
+/* [C28c] La "cote" : l'annotation de dessin technique.
+   C'est un élément décoratif en position absolue sur le parent .hero__grille. */
+.cote {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--police-mono);
+  font-size: 0.6875rem;
+  color: var(--craie);
+  letter-spacing: 0.05em;
+}
+.cote--hero { left: 50%; top: -1.5rem; transform: translateX(-50%); }
+.cote__valeur { white-space: nowrap; }
+.cote__ligne {
+  width: 46px;
+  height: 1px;
+  background: var(--craie);
+  position: relative;
+}
+/* Les deux petites barres aux extrémités du trait de cote */
+.cote__ligne::before,
+.cote__ligne::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 1px;
+  height: 9px;
+  background: var(--craie);
+}
+.cote__ligne::before { left: 0; }
+.cote__ligne::after  { right: 0; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C29] LES SECTIONS
+   Une seule règle de rythme vertical pour tout le site. C'est ce qui donne
+   l'impression que le site est "bien fait" : la régularité.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section { padding-block: var(--esp-xl); }
+
+/* [C29a] Dans une section sombre, on ne réécrit PAS toutes les couleurs des
+   enfants : on redéfinit les VARIABLES localement. Elles héritent, donc tous
+   les enfants suivent automatiquement. C'est très puissant.
+
+   ⚠️ PIÈGE RÉEL (je suis tombé dedans en écrivant ce fichier) :
+   une variable redéfinie ici s'applique AUSSI à cet élément-là. Si j'écrivais
+   « background: var(--encre) » ci-dessous, il prendrait la NOUVELLE valeur
+   (claire) et la section sombre serait… claire, avec du texte clair dessus.
+   D'où la couleur littérale pour le fond, et les variables pour les enfants. */
+.section--sombre {
+  background: hsl(211 30% 13%);
+  color: var(--papier);
+
+  --encre: hsl(200 20% 96%);
+  --acier: hsl(211 15% 68%);
+  --acier-clair: hsl(211 20% 30%);
+}
+
+.section__entete {
+  max-width: 62ch;
+  margin-bottom: var(--esp-lg);
+}
+.section__intro {
+  color: var(--acier);
+  font-size: 1.0625rem;
+  margin-top: var(--esp-sm);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C30] GRID — LA GRILLE DE CARTES
+   LA recette la plus utile de tout le CSS. Apprends-la par cœur.
+
+     repeat(auto-fit, minmax(280px, 1fr))
+
+   Traduction : "mets autant de colonnes que tu peux, chacune fait au minimum
+   280px, et elles se partagent l'espace restant."
+   Résultat : une grille 100 % responsive SANS UNE SEULE MEDIA QUERY.
+   Elle passe toute seule de 3 → 2 → 1 colonne.
+
+   auto-fit  = les colonnes s'étirent pour remplir la ligne  ← ce que tu veux
+   auto-fill = les colonnes vides sont conservées
+   🔧 ESSAIE : remplace 280px par 500px et redimensionne la fenêtre.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--esp-md);
+}
+
+.carte {
+  position: relative;            /* ← repère pour le badge en absolute [C46] */
+  display: flex;
+  flex-direction: column;        /* Grid pour la grille, Flexbox DANS la carte :
+                                    les deux se combinent tout le temps. */
+  background: var(--blanc);
+  border: 1px solid var(--acier-clair);
+  border-radius: var(--rayon-lg);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.carte:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ombre-lg);
+}
+
+.carte__media { overflow: hidden; }
+.carte__media img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform 500ms ease;
+}
+/* [C30a] Zoom de l'image au survol de LA CARTE (pas de l'image).
+   Le overflow:hidden du parent découpe le débordement. */
+.carte:hover .carte__media img { transform: scale(1.06); }
+
+.carte__corps {
+  padding: var(--esp-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  /* [C30b] flex:1 → ce bloc mange tout l'espace vertical restant.
+     Effet : les prix s'alignent en bas, même si les textes ont des
+     longueurs différentes. C'est LE détail qui fait "propre". */
+  flex: 1;
+}
+.carte__corps p { font-size: 0.9375rem; color: var(--acier); }
+
+/* [C30c] .specs — un <dl> mis en grille 2 colonnes.
+   dt = terme, dd = définition. */
+.specs {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem var(--esp-sm);
+  font-size: 0.8125rem;
+  font-family: var(--police-mono);
+  padding-block: 0.5rem;
+  border-block: 1px dashed var(--acier-clair);
+}
+.specs dt { color: var(--acier); }
+.specs dd { font-weight: 700; }
+
+.carte__prix {
+  margin-top: auto;              /* margin auto en flex = pousse en bas.
+                                    Même astuce que margin-left:auto en ligne. */
+  font-family: var(--police-mono);
+  font-weight: 700;
+  color: var(--acier);
+}
+.carte__prix span {
+  font-family: var(--police);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--encre);
+  letter-spacing: -0.03em;
+}
+
+.carte--vedette {
+  border-color: var(--encre);
+  border-width: 2px;
+  box-shadow: var(--ombre-md);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C32] LE TABLEAU
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C32a] Un tableau ne peut pas devenir responsive tout seul : les colonnes
+   ont besoin de place. La solution honnête : un conteneur qui défile
+   horizontalement sur mobile. */
+.tableau-scroll { overflow-x: auto; }
+
+.tableau {
+  width: 100%;
+  /* collapse = les bordures des cellules fusionnent en un seul trait.
+     Sans lui, tu as des doubles traits partout. */
+  border-collapse: collapse;
+  min-width: 480px;              /* en dessous, le conteneur défile */
+  font-size: 0.9375rem;
+}
+.tableau caption {
+  text-align: left;
+  color: var(--acier);
+  font-size: 0.8125rem;
+  padding-bottom: var(--esp-sm);
+}
+.tableau th,
+.tableau td {
+  text-align: left;
+  padding: 0.85rem var(--esp-sm);
+  border-bottom: 1px solid var(--acier-clair);
+}
+.tableau thead th {
+  font-family: var(--police-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border-bottom-width: 2px;
+}
+.tableau tbody th { font-weight: 600; }
+.tableau td:last-child { text-align: right; font-weight: 700; }
+
+/* [C32b] :nth-child(even) — une ligne sur deux. Zébrer un tableau, c'est
+   ce qui permet de suivre une ligne des yeux jusqu'au bout.
+   Les valeurs : odd (impairs), even (pairs), 3n (tous les 3), 2n+1... */
+.tableau tbody tr:nth-child(even) { background: hsl(0 0% 100% / 0.04); }
+.tableau tbody tr:hover { background: hsl(0 0% 100% / 0.08); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C35] LA MISE EN PAGE EN DEUX COLONNES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.duo {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;   /* contenu large + colonne latérale */
+  gap: var(--esp-lg);
+  align-items: start;                    /* sinon les colonnes s'étirent à
+                                            la même hauteur (stretch par défaut) */
+}
+.duo > div > p { margin-top: var(--esp-sm); }
+
+.citation {
+  margin-top: var(--esp-md);
+  padding-left: var(--esp-md);
+  border-left: 4px solid var(--accent);
+  font-size: 1.0625rem;
+}
+.citation footer {
+  margin-top: var(--esp-xs);
+  font-size: 0.875rem;
+  color: var(--acier);
+  font-style: normal;
+}
+
+.encart {
+  background: var(--blanc);
+  border: 1px solid var(--acier-clair);
+  border-radius: var(--rayon-lg);
+  padding: var(--esp-md);
+  position: sticky;              /* la colonne suit le scroll */
+  top: 6rem;
+}
+.encart h3 { margin-bottom: 0.6rem; }
+/* [C35a] Sélecteur "frère général" ~ : tous les h3 SAUF le premier
+   reçoivent une marge haute. Alternative propre à :not(:first-child). */
+.encart h3 ~ h3 { margin-top: var(--esp-md); }
+
+.horaires {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem var(--esp-sm);
+  font-size: 0.875rem;
+}
+.horaires dt { color: var(--acier); }
+.horaires dd { font-family: var(--police-mono); font-weight: 700; }
+.horaires .ferme { color: var(--erreur); }
+
+.encart address {
+  font-style: normal;            /* <address> est en italique par défaut */
+  font-size: 0.875rem;
+  line-height: 1.9;
+}
+
+.carte-map {
+  width: 100%;
+  height: 190px;
+  border: 1px solid var(--acier-clair);
+  border-radius: var(--rayon);
+  margin-top: var(--esp-md);
+  filter: grayscale(1) contrast(1.05);   /* la carte s'intègre au design */
+  transition: filter var(--transition);
+}
+.carte-map:hover { filter: none; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C40] LA GALERIE — object-fit, LE sauveur des grilles d'images
+   Les 6 images du HTML ont des proportions TOUTES DIFFÉRENTES
+   (600×900, 900×600, 700×700…). Sans object-fit, ta grille est un désastre :
+   soit les images se déforment, soit les cases ont des hauteurs différentes.
+
+     object-fit: cover   → remplit la case, rogne le surplus, NE DÉFORME JAMAIS
+     object-fit: contain → montre tout, laisse du vide autour
+
+   🔧 ESSAIE : passe en "contain", puis supprime la ligne. Regarde le carnage.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--esp-sm);
+}
+.galerie li { border-radius: var(--rayon); overflow: hidden; }
+.galerie img {
+  width: 100%;
+  aspect-ratio: 1 / 1;           /* toutes les cases deviennent carrées */
+  object-fit: cover;             /* ← la ligne magique */
+  filter: grayscale(0.85);
+  transition: filter 350ms ease, transform 350ms ease;
+}
+.galerie img:hover {
+  filter: grayscale(0);
+  transform: scale(1.04);
+}
+
+/* [C40a] :nth-child pour casser la régularité : la 2e et la 5e image
+   occupent deux colonnes. Une grille parfaitement régulière est ennuyeuse. */
+.galerie li:nth-child(2),
+.galerie li:nth-child(5) { grid-column: span 2; }
+.galerie li:nth-child(2) img,
+.galerie li:nth-child(5) img { aspect-ratio: 2 / 1; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C42] LA FAQ — styler <details> / <summary>
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.faq {
+  border-bottom: 1px solid var(--acier-clair);
+  padding-block: var(--esp-sm);
+}
+.faq summary {
+  /* [C42a] On enlève la petite flèche native pour dessiner la nôtre. */
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--esp-sm);
+}
+.faq summary::-webkit-details-marker { display: none; }  /* Safari/Chrome */
+
+/* Notre flèche, en pseudo-élément */
+.faq summary::after {
+  content: "+";
+  font-family: var(--police-mono);
+  font-size: 1.5rem;
+  color: var(--accent);
+  transition: transform var(--transition);
+  flex-shrink: 0;
+}
+/* [C42b] [open] = sélecteur d'attribut. <details> reçoit l'attribut "open"
+   du navigateur quand il est déplié. On le récupère gratuitement en CSS. */
+.faq[open] summary::after { transform: rotate(45deg); }   /* le + devient × */
+
+.faq p {
+  margin-top: var(--esp-sm);
+  color: var(--acier);
+  /* Petite animation à l'ouverture */
+  animation: apparition 300ms ease-out;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C45] POSITION — les 5 valeurs
+     static   : défaut, dans le flux, top/left ignorés
+     relative : dans le flux, mais décalable ET sert de REPÈRE aux enfants
+     absolute : sorti du flux, se cale sur l'ancêtre positionné le plus proche
+     fixed    : sorti du flux, se cale sur la FENÊTRE, ignore le scroll
+     sticky   : normal puis figé au scroll (voir [C25a])
+
+   LA RÈGLE D'OR : relative sur le PARENT, absolute sur l'ENFANT.
+   Sans relative sur le parent, l'enfant se cale sur la page entière et
+   part dans le coin. C'est LE bug de position le plus fréquent.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C46] Le badge de la carte "Le plus demandé".
+   .carte a déjà position:relative en [C30]. */
+.badge {
+  position: absolute;
+  top: var(--esp-sm);
+  right: var(--esp-sm);
+  z-index: 2;                    /* passe au-dessus de l'image */
+  background: var(--accent);
+  color: var(--encre);
+  font-family: var(--police-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;          /* 999px = pilule parfaite, quelle que soit
+                                    la hauteur. Plus fiable que 50%. */
+  box-shadow: var(--ombre-sm);
+}
+
+/* [C48] position:fixed — le bouton flottant.
+   Il reste collé à la fenêtre, immobile au scroll. */
+.retour-haut {
+  position: fixed;
+  bottom: var(--esp-md);
+  right: var(--esp-md);
+  z-index: 90;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;           /* place-items:center = justify + align.
+                                    Le centrage le plus court du CSS. */
+  background: var(--encre);
+  color: var(--papier);
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.25rem;
+  box-shadow: var(--ombre-md);
+  transition: transform var(--transition), background-color var(--transition);
+}
+.retour-haut:hover {
+  transform: translateY(-3px);
+  background: var(--craie);
+  color: var(--blanc);
+}
+
+/* [C49] L'ÉCHELLE DE Z-INDEX — par paliers, jamais 1/2/3.
+   Comme ça tu peux toujours intercaler quelque chose plus tard.
+   Et jamais z-index:99999 : c'est le début du chaos.
+     badge         2
+     retour-haut  90
+     entete      100
+     (modale)   1000
+   ATTENTION : z-index ne marche QUE sur un élément positionné (pas static). */
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C50] LES FORMULAIRES
+   C'est ce que le client achète vraiment. Un formulaire moche fait perdre
+   des demandes de devis. Prends le temps de bien styler celui-ci : tu le
+   réutiliseras sur tous tes projets.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-md);
+}
+
+/* [C50a] <fieldset> a une bordure et un padding par défaut assez laids.
+   On repart de zéro. */
+.formulaire fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+}
+.formulaire legend {
+  font-family: var(--police-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--craie);
+  padding-bottom: var(--esp-xs);
+  margin-bottom: var(--esp-xs);
+  width: 100%;
+  border-bottom: 1px solid var(--acier-clair);
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.champ label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* [C50b] Deux champs côte à côte, qui s'empilent sur mobile
+   grâce à minmax + auto-fit. Toujours sans media query. */
+.grille-champs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--esp-sm);
+}
+
+/* [C50c] On style tous les types de champs d'un coup avec des
+   sélecteurs d'attribut. Note qu'il faut lister les types :
+   un simple "input" attraperait aussi les cases à cocher et les radios. */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  background: var(--blanc);
+  border: 1.5px solid var(--acier-clair);
+  border-radius: var(--rayon);
+  font-size: 0.9375rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+textarea {
+  resize: vertical;              /* redimensionnable en hauteur seulement :
+                                    l'utilisateur ne peut pas casser ta mise
+                                    en page en l'élargissant. */
+  min-height: 110px;
+}
+
+/* [C50d] :focus-visible plutôt que :focus.
+   Différence : :focus se déclenche aussi au clic de souris (anneau
+   inutile et jugé "moche" par les clients). :focus-visible ne se
+   déclenche QU'À LA NAVIGATION CLAVIER. C'est le bon compromis entre
+   accessibilité et esthétique. Ne supprime JAMAIS l'anneau sans le
+   remplacer : le site devient inutilisable au clavier. */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--craie);
+  outline-offset: 2px;           /* outline ne prend PAS de place dans le
+                                    flux, contrairement à border. */
+}
+input:focus,
+select:focus,
+textarea:focus { border-color: var(--craie); }
+
+/* [C50e] ::placeholder — un pseudo-élément.
+   Le placeholder est un EXEMPLE, jamais un label : il disparaît dès
+   qu'on tape. Garde-le gris clair, mais lisible. */
+::placeholder {
+  color: var(--acier);
+  opacity: 0.65;
+}
+
+.aide { font-size: 0.75rem; color: var(--acier); }
+
+/* [C50f] Validation native. :user-invalid ne se déclenche qu'APRÈS que
+   l'utilisateur a quitté le champ — contrairement à :invalid, qui affiche
+   du rouge dès le chargement de la page (horrible pour l'expérience). */
+input:user-invalid,
+textarea:user-invalid {
+  border-color: var(--erreur);
+}
+input:user-invalid + .aide { color: var(--erreur); }
+
+/* [C51] Les cases à cocher et les radios.
+   accent-color : une SEULE ligne pour colorer les contrôles natifs à ta
+   charte. Avant, il fallait 40 lignes de bidouille. Très peu connu. */
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"] {
+  accent-color: var(--craie);
+  cursor: pointer;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+}
+
+.sous-groupe { margin-top: var(--esp-xs); }
+.options { display: flex; flex-wrap: wrap; gap: var(--esp-sm); }
+
+/* [C51a] Le label ENGLOBE l'input dans le HTML : toute la boîte devient
+   cliquable. Bien plus confortable qu'une case de 16px sur mobile. */
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--acier-clair);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+.option:hover { border-color: var(--craie); }
+
+/* [C51b] :has() — LE sélecteur "parent" qu'on attendait depuis 20 ans.
+   Ici : "le .option QUI CONTIENT une radio cochée".
+   Avant, c'était impossible sans JavaScript. */
+.option:has(input:checked) {
+  border-color: var(--encre);
+  background: var(--accent);
+  font-weight: 600;
+}
+
+.case {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.case input { margin-top: 0.2rem; }
+
+/* [C52] input[type="range"] — la piste. */
+input[type="range"] { width: 100%; height: 1.5rem; }
+output { font-family: var(--police-mono); font-weight: 700; color: var(--craie); }
+
+.formulaire__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-sm);
+}
+
+/* [C53] Astérisque automatique sur les champs obligatoires.
+   Le CSS lit l'attribut "required" du HTML : aucune classe à ajouter,
+   aucun risque d'oubli. Le HTML reste la source de vérité. */
+.champ:has(input[required], select[required]) label::after,
+.case:has(input[required]) > span::after {
+  content: " *";
+  color: var(--erreur);
+  font-weight: 800;
+}
+.requis { color: var(--erreur); font-weight: 800; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C55] PSEUDO-CLASSES ET PSEUDO-ÉLÉMENTS
+
+   PSEUDO-CLASSES (un « : ») = un ÉTAT de l'élément
+     :hover  :focus  :focus-visible  :active  :visited
+     :first-child  :last-child  :nth-child(2n)  :only-child
+     :checked  :disabled  :required  :user-invalid
+     :not(.x)   :is(h1, h2, h3)   :has(img)   :target
+
+   PSEUDO-ÉLÉMENTS (deux « :: ») = un MORCEAU généré
+     ::before  ::after   (content obligatoire, même vide)
+     ::placeholder  ::selection  ::first-line  ::first-letter  ::marker
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C55a] ::selection — la couleur du surlignage quand on sélectionne du texte.
+   🔧 ESSAIE : sélectionne n'importe quel texte de la page. */
+::selection {
+  background: var(--accent);
+  color: var(--encre);
+}
+
+/* [C57] Sélecteur d'attribut + pseudo-élément : une flèche ajoutée
+   AUTOMATIQUEMENT à tous les liens qui ouvrent un nouvel onglet.
+   Zéro classe à écrire, ça marche sur tous les liens externes à vie. */
+a[target="_blank"]::after {
+  content: " ↗";
+  font-size: 0.8em;
+  color: var(--craie);
+}
+
+/* [C57a] Idem pour les liens mail et téléphone. */
+a[href^="mailto:"]::before { content: "✉ "; }
+a[href^="tel:"]::before    { content: "☎ "; }
+.hero__actions a[href^="tel:"]::before { content: none; }  /* sauf dans le hero */
+
+/* [C58] :not() — "tous sauf". Utile pour éviter les :last-child. */
+.pied__liens li:not(:last-child) { margin-bottom: 0.4rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C60] TRANSITIONS ET ANIMATIONS
+
+   3 RÈGLES DE PRO :
+   1. Nomme les propriétés animées. Jamais "transition: all".
+   2. 150–300 ms. En dessous on ne voit rien, au-dessus ça traîne.
+   3. Anime SEULEMENT transform et opacity quand c'est possible : ce sont
+      les deux seules propriétés que le navigateur traite sur la carte
+      graphique. Animer width/height/top/margin force un recalcul complet
+      de la mise en page à chaque image → saccades.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C60a] @keyframes = définir une animation. */
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulsation-douce {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+
+/* On l'applique. "forwards" = reste dans l'état final au lieu de revenir. */
+.hero__texte  { animation: apparition 700ms ease-out both; }
+.hero__visuel { animation: apparition 700ms ease-out 150ms both; }
+                                          /* ↑ le délai crée un enchaînement */
+.badge { animation: pulsation-douce 3.5s ease-in-out infinite; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C65] LE PIED DE PAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pied {
+  background: var(--encre);
+  color: var(--papier);
+  padding-top: var(--esp-lg);
+  margin-top: var(--esp-xl);
+}
+.pied__grille {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--esp-lg);
+  padding-bottom: var(--esp-lg);
+}
+.logo--pied .logo__roue { border-color: var(--papier); }
+.pied__baseline {
+  margin-top: var(--esp-sm);
+  font-size: 0.875rem;
+  color: hsl(211 15% 68%);
+}
+.pied__titre {
+  font-size: 0.75rem;
+  font-family: var(--police-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: var(--esp-sm);
+  font-weight: 700;
+}
+.pied__liens { font-size: 0.9375rem; }
+.pied__liens a { text-decoration: none; color: hsl(211 15% 78%); }
+.pied__liens a:hover { color: var(--accent); }
+
+.pied__bas {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--esp-sm);
+  padding-block: var(--esp-sm);
+  border-top: 1px solid hsl(211 20% 26%);
+  font-size: 0.8125rem;
+  color: hsl(211 15% 60%);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C70] LE LABORATOIRE — les démonstrations
+   Ce CSS n'existerait pas sur un vrai site. Il est là pour te montrer
+   les différences côte à côte.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.labo { background: var(--blanc); border-top: 3px dashed var(--acier-clair); }
+
+.demo {
+  border: 1px solid var(--acier-clair);
+  border-radius: var(--rayon-lg);
+  padding: var(--esp-md);
+  margin-bottom: var(--esp-md);
+  background: var(--papier);
+}
+.demo h3 { display: flex; align-items: center; gap: 0.6rem; }
+.demo__num {
+  display: grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  background: var(--encre);
+  color: var(--accent);
+  border-radius: 50%;
+  font-family: var(--police-mono);
+  font-size: 0.8125rem;
+  flex-shrink: 0;
+}
+.demo__legende {
+  font-size: 0.875rem;
+  color: var(--acier);
+  margin-block: 0.5rem var(--esp-sm);
+  max-width: none;
+}
+.demo__scene {
+  position: relative;   /* pour la démo 5 : c'est CE bloc qui récupère
+                           l'enfant absolute dont le parent n'a pas relative */
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-md);
+  padding: var(--esp-md);
+  background: var(--blanc);
+  border: 1px dashed var(--acier-clair);
+  border-radius: var(--rayon);
+}
+.demo__scene--colonne { flex-direction: column; gap: var(--esp-sm); }
+
+/* --- DÉMO 1 : box-sizing ------------------------------------------------- */
+.bs {
+  width: 200px;                  /* MÊME width */
+  padding: 24px;                 /* MÊME padding */
+  border: 6px solid var(--encre);/* MÊME border */
+  font-size: 0.8125rem;
+  font-family: var(--police-mono);
+  text-align: center;
+}
+.bs--content { box-sizing: content-box; background: hsl(0 70% 48% / 0.12); }
+.bs--border  { box-sizing: border-box;  background: hsl(150 60% 36% / 0.15); }
+
+/* --- DÉMO 2 : inline / block / inline-block ------------------------------ */
+.ligne-demo { max-width: none; font-size: 0.9375rem; }
+.d {
+  width: 180px;                  /* la MÊME largeur demandée aux trois */
+  padding: 20px;
+  background: var(--accent);
+  font-family: var(--police-mono);
+  font-size: 0.75rem;
+  text-align: center;
+}
+.d--inline       { display: inline; }        /* width IGNORÉ, padding déborde */
+.d--inline-block { display: inline-block; }  /* width respecté, reste en ligne */
+.d--block        { display: block; }         /* width respecté, saute la ligne */
+
+/* --- DÉMO 3 : justify-content -------------------------------------------- */
+.jc {
+  display: flex;
+  position: relative;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  padding-right: 8.5rem;         /* place pour l'étiquette */
+  background: var(--papier);
+  border: 1px solid var(--acier-clair);
+  border-radius: var(--rayon);
+}
+.jc span {
+  display: grid; place-items: center;
+  width: 40px; height: 34px;
+  background: var(--encre);
+  color: var(--accent);
+  font-family: var(--police-mono);
+  font-size: 0.75rem;
+  border-radius: 3px;
+}
+.jc em {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--police-mono);
+  font-size: 0.6875rem;
+  font-style: normal;
+  color: var(--craie);
+}
+.jc--start   { justify-content: flex-start; }
+.jc--center  { justify-content: center; }
+.jc--end     { justify-content: flex-end; }
+.jc--between { justify-content: space-between; }
+.jc--around  { justify-content: space-around; }
+.jc--evenly  { justify-content: space-evenly; }
+
+/* --- DÉMO 4 : les unités ------------------------------------------------- */
+.unites { }
+.u {
+  padding: 0.6rem 0.85rem;
+  background: var(--encre);
+  color: var(--accent);
+  font-family: var(--police-mono);
+  font-size: 0.8125rem;
+  border-radius: 3px;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--esp-sm);
+}
+.u span { color: hsl(211 15% 68%); font-size: 0.6875rem; }
+.u--px  { width: 320px; }        /* figé pour toujours */
+.u--rem { width: 20rem; }        /* suit la taille de police du navigateur */
+.u--pct { width: 60%; }          /* suit le PARENT */
+.u--vw  { width: 40vw; }         /* suit la FENÊTRE */
+
+/* --- DÉMO 5 : position --------------------------------------------------- */
+.pos {
+  width: 220px;
+  height: 130px;
+  background: var(--papier);
+  border: 2px dashed var(--acier-clair);
+  border-radius: var(--rayon);
+  padding: 0.6rem;
+}
+.pos--sans { position: static; }    /* ← PAS de repère */
+.pos--avec { position: relative; }  /* ← repère pour l'enfant */
+.pos__etiquette {
+  font-family: var(--police-mono);
+  font-size: 0.6875rem;
+  color: var(--acier);
+}
+.pos__enfant {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: var(--accent);
+  border: 2px solid var(--encre);
+  padding: 0.4rem 0.6rem;
+  font-family: var(--police-mono);
+  font-size: 0.6875rem;
+  border-radius: 3px;
+}
+
+/* --- DÉMO 6 : spécificité ------------------------------------------------ */
+/* Quatre règles visent le même <p>. Ouvre DevTools sur lui : les perdantes
+   sont barrées. Score : (id, classe, type), comparé de gauche à droite. */
+p.cible                { color: hsl(220 80% 50%); }   /* (0,1,1) */
+.demo__scene p         { color: hsl(150 60% 36%); }   /* (0,1,1) — égalité !
+                                                         → la DERNIÈRE écrite gagne */
+div p                  { color: hsl(0 70% 48%); }     /* (0,0,2) */
+#zone-spec .cible      { color: hsl(280 60% 45%); }   /* (1,1,0) ← GAGNE */
+.cible {
+  font-family: var(--police-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  max-width: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C80] LE RESPONSIVE — les media queries
+
+   MOBILE-FIRST : tout ce qui précède est le style de BASE (donc mobile).
+   Ici on ajoute ce qui CHANGE sur les grands écrans, avec min-width.
+
+   Pourquoi mobile-first ? Le mobile est le cas le plus contraint : en
+   partant de là, on garde l'essentiel. Le CSS est plus court, et le
+   téléphone (le moins puissant) charge le CSS le plus simple.
+
+   Les points de rupture ci-dessous sont des REPÈRES, pas une loi.
+   La bonne méthode : élargis lentement ta fenêtre et mets une media query
+   au moment où ça devient moche. C'est ton design qui décide.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Note : ce fichier utilise beaucoup auto-fit/minmax et clamp(), donc il
+   a besoin de très peu de media queries. C'est l'objectif : le CSS moderne
+   permet d'écrire un site responsive avec presque aucun point de rupture. */
+
+@media (max-width: 900px) {
+  .hero__grille,
+  .duo,
+  .pied__grille { grid-template-columns: 1fr; }
+
+  .hero__visuel { order: -1; }   /* order : change l'ordre VISUEL sans
+                                    toucher au HTML. L'image passe au-dessus
+                                    du texte sur mobile. */
+  .hero__visuel img { aspect-ratio: 16 / 10; }
+  .encart { position: static; }  /* le sticky n'a plus de sens en 1 colonne */
+  .cote--hero { display: none; }
+}
+
+@media (max-width: 700px) {
+  :root { --esp-xl: 3.5rem; --esp-lg: 2rem; }   /* on resserre tout le rythme
+                                                   vertical en changeant DEUX
+                                                   variables. */
+  .nav__liste { gap: var(--esp-sm); font-size: 0.875rem; }
+  /* On masque les liens secondaires, on garde le bouton d'action.
+     (Sur un vrai projet : menu burger, Jour 16 de ta roadmap.) */
+  .nav__liste li:not(:last-child) { display: none; }
+
+  .galerie li:nth-child(2),
+  .galerie li:nth-child(5) { grid-column: span 1; }
+  .galerie li:nth-child(2) img,
+  .galerie li:nth-child(5) img { aspect-ratio: 1 / 1; }
+
+  .pied__bas { flex-direction: column; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C90] ACCESSIBILITÉ ET PRÉFÉRENCES SYSTÈME
+   Trois blocs que presque personne n'écrit, et qui te démarqueront.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* [C90a] Certaines personnes ont le mal des transports numérique : les
+   animations leur donnent la nausée. Elles activent "réduire les
+   animations" dans leur système. On le respecte.
+   C'est un des rares cas où !important est justifié. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* [C90b] LE MODE SOMBRE — la démonstration ultime des variables CSS.
+   On ne réécrit AUCUNE règle : on change juste la valeur des variables.
+   Tout le site bascule.
+   🔧 ESSAIE : DevTools > icône ⋮ en haut à droite du panneau > More tools >
+   Rendering > "Emulate CSS prefers-color-scheme: dark". */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papier:      hsl(211 25% 11%);
+    --blanc:       hsl(211 22% 16%);
+    --encre:       hsl(200 20% 94%);
+    --encre-doux:  hsl(200 20% 88%);
+    --acier:       hsl(211 12% 62%);
+    --acier-clair: hsl(211 18% 26%);
+    --ombre-sm: 0 1px 3px hsl(0 0% 0% / 0.4);
+    --ombre-md: 0 6px 20px hsl(0 0% 0% / 0.45);
+    --ombre-lg: 0 18px 45px hsl(0 0% 0% / 0.5);
+  }
+  .entete { background: hsl(211 25% 11% / 0.88); }
+  .section--sombre { background: hsl(211 30% 8%); }
+  .hero {
+    background-image:
+      linear-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px);
+  }
+}
+
+/* [C90c] Feuille d'impression. Un client te remerciera un jour d'avoir
+   fait que sa page de tarifs s'imprime proprement. */
+@media print {
+  .entete, .retour-haut, .hero__actions, .labo, .carte-map { display: none; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .section { padding-block: 1rem; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; }
+  /* attr(href) : le CSS peut lire un attribut du HTML et l'afficher.
+     Ici : imprimer l'URL à côté du texte du lien, sinon elle est perdue. */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   [C99] FIN — TES RÉFLEXES DE DÉBOGAGE
+
+   « Ma règle ne s'applique pas »   → spécificité [C15], ordre, faute de frappe
+   « Mon width est ignoré »          → l'élément est inline → display [C20a]
+   « Ça déborde du parent »          → box-sizing [C01a] ou image sans max-width
+   « Scroll horizontal sur mobile »  → largeur fixe, image, ou 100vw + padding
+   « Mon absolute part ailleurs »    → le parent n'a pas position:relative [C45]
+   « Mon sticky ne colle pas »       → pas de top, ou overflow:hidden sur un parent
+   « Mon z-index est ignoré »        → élément static, ou contexte d'empilement
+   « Espace bizarre sous une image » → display:block manquant [C01c]
+   « Mon formulaire est moche »      → font:inherit manquant [C01d]
+
+   TON MEILLEUR PROFESSEUR : DevTools (F12), onglet Éléments.
+   Les règles barrées sont celles qui ont perdu. Le panneau "Computed"
+   te donne la valeur finale en pixels. Modifie tout en direct.
+   ═══════════════════════════════════════════════════════════════════════════ */
