@@ -1,0 +1,853 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap à portes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#0F141A;
+  --panel:#161D25;
+  --panel-2:#1C242E;
+  --rule:#2A3440;
+  --chalk:#E4E8EC;
+  --muted:#8B96A3;
+  --steel:#55636F;
+  --signal:#E8B84B;
+  --signal-dim:#8A6E2A;
+  --cool:#54A6D6;
+  --display:'Archivo Black',system-ui,sans-serif;
+  --body:'Space Grotesk',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--chalk);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 120px}
+
+/* ---------- HEADER ---------- */
+
+.masthead{padding:56px 0 32px;border-bottom:1px solid var(--rule)}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--signal);margin:0 0 18px
+}
+
+.masthead h1{
+  font-family:var(--display);font-size:clamp(34px,8vw,60px);
+  line-height:.94;letter-spacing:-.02em;margin:0 0 20px;text-transform:uppercase
+}
+
+.thesis{font-size:17px;color:var(--muted);max-width:52ch;margin:0}
+.thesis strong{color:var(--chalk);font-weight:500}
+
+/* ---------- PROGRESS ---------- */
+
+.meter{
+  margin-top:32px;padding:18px 20px;background:var(--panel);
+  border:1px solid var(--rule);border-radius:2px
+}
+
+.meter-top{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:16px;margin-bottom:14px;flex-wrap:wrap
+}
+
+.meter-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.meter-now{font-family:var(--display);font-size:15px;color:var(--signal);text-transform:uppercase}
+
+.pips{display:flex;gap:5px}
+.pip{height:7px;flex:1;background:var(--rule);border-radius:1px;transition:background .5s ease}
+.pip.on{background:var(--signal)}
+
+.controls{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+
+.btn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  background:transparent;color:var(--muted);border:1px solid var(--rule);
+  padding:9px 16px;border-radius:2px;cursor:pointer;transition:.18s
+}
+.btn:hover{color:var(--chalk);border-color:var(--steel)}
+.btn:focus-visible{outline:2px solid var(--cool);outline-offset:2px}
+
+/* ---------- SECTIONS ---------- */
+
+section{padding-top:64px}
+
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;flex-wrap:wrap}
+.sec-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--steel);text-transform:uppercase}
+.sec-head h2{
+  font-family:var(--display);font-size:clamp(21px,4.5vw,29px);
+  margin:0;text-transform:uppercase;letter-spacing:-.01em
+}
+.sec-intro{color:var(--muted);margin:0 0 28px;max-width:58ch}
+
+/* ---------- TRI TABLE ---------- */
+
+.tri{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.tri-row{display:grid;grid-template-columns:1fr 132px;gap:14px;background:var(--panel);padding:14px 16px;align-items:center}
+.tri-row .what{font-size:15px}
+.tri-row .what b{font-weight:700}
+.tri-row .kind{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  text-align:right;color:var(--muted)
+}
+.kind.biz{color:var(--signal)}
+.kind.canal{color:var(--cool)}
+.kind.mono{color:#B79BD6}
+.kind.hobby{color:var(--steel)}
+
+@media(max-width:560px){
+  .tri-row{grid-template-columns:1fr;gap:6px}
+  .tri-row .kind{text-align:left}
+}
+
+/* ---------- SPINE + GATES ---------- */
+
+.spine{position:relative;padding-left:44px}
+
+.spine::before{
+  content:"";position:absolute;left:11px;top:14px;bottom:40px;
+  width:2px;background:var(--rule)
+}
+
+.spine-fill{
+  position:absolute;left:11px;top:14px;width:2px;height:0;
+  background:var(--signal);transition:height .7s cubic-bezier(.4,0,.2,1)
+}
+
+.gate{position:relative;margin-bottom:34px}
+
+.node{
+  position:absolute;left:-44px;top:8px;width:24px;height:24px;
+  border-radius:50%;background:var(--ink);border:2px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:600;color:var(--steel);
+  transition:.4s;z-index:2
+}
+.gate.done .node{border-color:var(--signal);background:var(--signal);color:var(--ink)}
+.gate.active .node{border-color:var(--signal);color:var(--signal)}
+
+.card{
+  background:var(--panel);border:1px solid var(--rule);
+  border-radius:2px;padding:22px;transition:.4s
+}
+.gate.active .card{border-color:var(--signal-dim);background:var(--panel-2)}
+.gate.done .card{border-color:var(--rule);opacity:.82}
+
+.gate-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.gate-name{font-family:var(--display);font-size:clamp(17px,3.6vw,22px);text-transform:uppercase;margin:0;letter-spacing:-.01em}
+.gate-state{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);white-space:nowrap}
+.gate.done .gate-state{color:var(--signal)}
+.gate.active .gate-state{color:var(--cool)}
+
+.gate-sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+
+.cond-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--steel);margin:0 0 12px;display:block
+}
+
+/* ---------- CHECKBOXES ---------- */
+
+.cond{display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer}
+.cond + .cond{border-top:1px dashed var(--rule)}
+.cond input{position:absolute;opacity:0;width:0;height:0}
+
+.box{
+  flex:0 0 18px;width:18px;height:18px;margin-top:3px;
+  border:1.5px solid var(--steel);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;transition:.15s
+}
+.box svg{width:11px;height:11px;opacity:0;transform:scale(.6);transition:.15s}
+.cond input:checked + .box{background:var(--signal);border-color:var(--signal)}
+.cond input:checked + .box svg{opacity:1;transform:scale(1)}
+.cond input:focus-visible + .box{outline:2px solid var(--cool);outline-offset:2px}
+.cond:hover .box{border-color:var(--chalk)}
+
+.cond-text{font-size:15px;line-height:1.5;transition:.15s}
+.cond input:checked ~ .cond-text{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--signal-dim)}
+
+/* ---------- OPENS / STAYS SHUT ---------- */
+
+.opens{margin-top:20px;padding-top:18px;border-top:1px solid var(--rule)}
+.opens h4{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--signal);margin:0 0 10px;font-weight:600
+}
+.opens.shut h4{color:var(--steel)}
+.opens ul{margin:0;padding-left:18px}
+.opens li{margin-bottom:6px;font-size:14.5px}
+.opens li::marker{color:var(--steel)}
+.opens.shut li{color:var(--muted)}
+
+.warn{
+  margin-top:18px;padding:13px 15px;background:rgba(232,184,75,.07);
+  border-left:2px solid var(--signal);font-size:14px;color:var(--chalk)
+}
+.warn b{color:var(--signal)}
+
+/* ---------- RHYTHM BLOCKS ---------- */
+
+.slab{background:var(--panel);border:1px solid var(--rule);border-radius:2px;padding:22px;margin-bottom:16px}
+.slab h3{font-family:var(--display);font-size:16px;text-transform:uppercase;margin:0 0 14px;letter-spacing:.01em}
+.slab p{margin:0 0 12px}
+.slab p:last-child{margin-bottom:0}
+
+.stack{display:flex;flex-direction:column;gap:12px}
+.step{display:grid;grid-template-columns:78px 1fr;gap:14px;align-items:start}
+.step .t{font-family:var(--mono);font-size:11px;color:var(--signal);letter-spacing:.06em;padding-top:3px}
+.step .d{font-size:15px}
+.step .d small{display:block;color:var(--muted);font-size:13.5px;margin-top:3px}
+
+@media(max-width:520px){
+  .step{grid-template-columns:1fr;gap:2px}
+}
+
+.week{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.week-row{display:grid;grid-template-columns:120px 1fr;gap:14px;background:var(--panel);padding:12px 16px}
+.week-row .day{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);padding-top:2px}
+.week-row .task{font-size:14.5px}
+
+@media(max-width:520px){
+  .week-row{grid-template-columns:1fr;gap:4px}
+}
+
+.cadence{display:flex;flex-direction:column;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.cad-row{display:grid;grid-template-columns:1fr 120px 90px;gap:12px;background:var(--panel);padding:13px 16px;align-items:center}
+.cad-row.head{background:var(--panel-2)}
+.cad-row.head span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+.cad-row .ch{font-size:14.5px;font-weight:500}
+.cad-row .fq{font-family:var(--mono);font-size:12.5px;color:var(--signal)}
+.cad-row .tm{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.cad-row.off .fq,.cad-row.off .ch{color:var(--steel)}
+
+@media(max-width:600px){
+  .cad-row{grid-template-columns:1fr 1fr;gap:4px 12px}
+  .cad-row .ch{grid-column:1/-1}
+  .cad-row.head{display:none}
+}
+
+.formats{counter-reset:f;list-style:none;margin:0;padding:0}
+.formats li{
+  counter-increment:f;position:relative;padding:14px 0 14px 44px;
+  border-top:1px solid var(--rule)
+}
+.formats li:last-child{border-bottom:1px solid var(--rule)}
+.formats li::before{
+  content:counter(f);position:absolute;left:0;top:14px;
+  font-family:var(--mono);font-size:11px;color:var(--signal);
+  border:1px solid var(--rule);width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;border-radius:2px
+}
+.formats .fname{font-weight:700;font-size:15px;display:block;margin-bottom:5px}
+.formats .fdesc{color:var(--muted);font-size:14px;display:block;margin-bottom:8px}
+.hook{
+  font-family:var(--mono);font-size:13px;color:var(--cool);
+  border-left:2px solid var(--rule);padding-left:12px;display:block;margin-top:5px;line-height:1.55
+}
+
+.rules{list-style:none;margin:0;padding:0;counter-reset:r}
+.rules li{
+  counter-increment:r;position:relative;padding:16px 0 16px 46px;
+  border-bottom:1px solid var(--rule);font-size:15.5px
+}
+.rules li:first-child{border-top:1px solid var(--rule)}
+.rules li::before{
+  content:counter(r);position:absolute;left:0;top:16px;
+  font-family:var(--display);font-size:20px;color:var(--rule)
+}
+.rules b{color:var(--signal);font-weight:700}
+
+.log{
+  font-family:var(--mono);font-size:13px;line-height:2;
+  background:var(--panel);border:1px solid var(--rule);
+  padding:22px;border-radius:2px;color:var(--muted);
+  white-space:pre-wrap;overflow-x:auto
+}
+
+.aside{
+  margin-top:64px;padding:22px;border:1px dashed var(--rule);border-radius:2px
+}
+.aside h3{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);margin:0 0 12px}
+.aside p{color:var(--muted);font-size:14.5px;margin:0 0 10px}
+.aside p:last-child{margin-bottom:0}
+.aside b{color:var(--chalk);font-weight:500}
+
+.end{
+  margin-top:56px;padding-top:26px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--steel);text-align:center
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
+
+/* ---------- PRINT ---------- */
+
+@media print{
+  body{background:#fff;color:#000}
+  .wrap{max-width:100%;padding:0}
+  .controls,.meter{display:none}
+  .card,.slab,.log,.tri-row,.week-row,.cad-row{background:#fff;border-color:#bbb}
+  .node{background:#fff;color:#000;border-color:#000}
+  .spine::before,.spine-fill{background:#000}
+  .gate,.slab{break-inside:avoid;page-break-inside:avoid}
+  section{padding-top:28px}
+  .box{border-color:#000}
+  h1,h2,h3,.gate-name{color:#000}
+  .cond-text,.step .d,.week-row .task,.cad-row .ch{color:#000}
+  .opens h4,.gate-state,.sec-tag,.meter-label{color:#444}
+  .hook{color:#333;border-color:#999}
+}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Système d'avancement</p>
+  <h1>Des portes,<br>pas des dates</h1>
+  <p class="thesis">Chaque porte s'ouvre sur un <strong>fait prouvable</strong> — une URL, une facture payée, un chiffre. Tu accélères, elle s'ouvre tôt. Tu traînes, elle reste fermée. Une porte ne s'ouvre jamais « presque ».</p>
+
+  <div class="meter">
+    <div class="meter-top">
+      <span class="meter-label">Progression</span>
+      <span class="meter-now" id="now">Porte 1 — L'URL publique</span>
+    </div>
+    <div class="pips" id="pips"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="print">Imprimer / PDF</button>
+    <button class="btn" id="reset">Tout décocher</button>
+    <span class="btn" id="saveState" style="cursor:default;border-color:transparent">—</span>
+  </div>
+</header>
+
+<!-- ============ TRI ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">01</span><h2>Le tri</h2></div>
+  <p class="sec-intro">Tu n'as pas 7 business. Tu as 3 business, 2 canaux, 1 monétisation et 1 hobby. Rangé comme ça, la décision devient simple.</p>
+
+  <div class="tri">
+    <div class="tri-row"><span class="what"><b>Code full-stack + automatisation IA</b> — le seul truc où la compétence paie maintenant, sans stock ni budget pub</span><span class="kind biz">Business · cœur</span></div>
+    <div class="tri-row"><span class="what"><b>Vinted / seconde main</b> — cash rapide et concret pendant que le reste chauffe</span><span class="kind biz">Business · appoint</span></div>
+    <div class="tri-row"><span class="what"><b>Alibaba-1688 → TikTok Shop</b> — capital de test, trésorerie, attention complète</span><span class="kind biz">Business · parké</span></div>
+    <div class="tri-row"><span class="what"><b>Short form</b> TikTok / Reels / Shorts</span><span class="kind canal">Canal</span></div>
+    <div class="tri-row"><span class="what"><b>Long format YouTube</b> — 5 à 10× le temps par vidéo</span><span class="kind canal">Canal</span></div>
+    <div class="tri-row"><span class="what"><b>Formation + Discord</b> — monétisation d'une audience qui n'existe pas encore</span><span class="kind mono">Monétisation</span></div>
+    <div class="tri-row"><span class="what"><b>Imprimante 3D K1C</b> — petits tickets, prospection, fabrication, envoi, SAV</span><span class="kind hobby">Hobby / outil</span></div>
+  </div>
+
+  <div class="warn" style="margin-top:20px"><b>La fusion.</b> Les idées 1 et 2 se rejoignent : tu codes tes propres outils d'automatisation pour ta revente. Une seule action nourrit quatre cases — projet de portfolio, avantage réel sur Vinted, contenu à publier, micro-SaaS potentiel.</div>
+</section>
+
+<!-- ============ PORTES ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">02</span><h2>Les portes</h2></div>
+  <p class="sec-intro">Coche une condition seulement quand elle est vraie. C'est ce qui empêche ton cerveau de négocier avec toi à 23 h quand une nouvelle idée paraît géniale.</p>
+
+  <div class="spine" id="spine">
+    <div class="spine-fill" id="fill"></div>
+
+    <!-- PORTE 1 -->
+    <article class="gate" data-gate="1">
+      <div class="node">1</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">L'URL publique</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">Estimation : environ une semaine de vrai travail.</p>
+        <span class="cond-label">Conditions</span>
+        <label class="cond"><input type="checkbox" data-id="p1a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Un projet terminé, responsive, sans lien mort ni faute d'orthographe</span></label>
+        <label class="cond"><input type="checkbox" data-id="p1b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Déployé en ligne (Netlify ou Vercel) avec une vraie URL</span></label>
+        <label class="cond"><input type="checkbox" data-id="p1c"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Dépôt GitHub public avec un vrai README : description, captures, stack, lien live</span></label>
+        <label class="cond"><input type="checkbox" data-id="p1d"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Je peux envoyer cette URL à n'importe qui sans rougir</span></label>
+
+        <div class="opens">
+          <h4>Ce que ça ouvre</h4>
+          <ul>
+            <li>Les shorts — 3 par semaine, plancher non négociable</li>
+            <li>X — 1 à 2 posts par jour, ton parcours en brut</li>
+            <li>Tu documentes ce que tu <em>construis</em>, jamais ce que tu apprends</li>
+          </ul>
+        </div>
+        <div class="opens shut">
+          <h4>Reste fermé</h4>
+          <ul><li>Long format · stream · Discord · formation · TikTok Shop · 3D comme business</li></ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- PORTE 2 -->
+    <article class="gate" data-gate="2">
+      <div class="node">2</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">Démarchable</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">Techniquement, quelqu'un peut te payer à partir d'ici.</p>
+        <span class="cond-label">Conditions</span>
+        <label class="cond"><input type="checkbox" data-id="p2a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Portfolio en ligne avec une proposition de valeur orientée client, pas « développeur junior passionné »</span></label>
+        <label class="cond"><input type="checkbox" data-id="p2b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">3 projets présentés en études de cas : contexte → solution → résultat, avec lien live et lien GitHub</span></label>
+        <label class="cond"><input type="checkbox" data-id="p2c"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Lighthouse au-dessus de 90 en performance et accessibilité sur chaque projet</span></label>
+        <label class="cond"><input type="checkbox" data-id="p2d"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Profil Malt complet : photo, titre orienté client, 3 projets illustrés, tarif journalier</span></label>
+        <label class="cond"><input type="checkbox" data-id="p2e"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Profil LinkedIn optimisé : bannière avec la proposition de valeur, section sélection avec les liens</span></label>
+        <label class="cond"><input type="checkbox" data-id="p2f"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Compte Codeur.com créé</span></label>
+        <label class="cond"><input type="checkbox" data-id="p2g"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Pitch écrit en 3 variantes, récitable en 20 secondes sans le lire</span></label>
+
+        <div class="opens">
+          <h4>Ce que ça ouvre</h4>
+          <ul>
+            <li>Prospection quotidienne : 30 min, 5 contacts, relances J+3 et J+7</li>
+            <li>Le contenu change d'angle : plus « j'apprends », mais « voilà ce que je construis pour des commerçants »</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- PORTE 3 -->
+    <article class="gate" data-gate="3">
+      <div class="node">3</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">Le premier euro encaissé</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">La porte la plus dure de toutes. Elle est commerciale, pas technique.</p>
+        <span class="cond-label">Conditions</span>
+        <label class="cond"><input type="checkbox" data-id="p3a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Une facture <b>payée</b>. Argent sur le compte. Pas un oui verbal, pas un devis signé.</span></label>
+        <label class="cond"><input type="checkbox" data-id="p3b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Micro-entreprise déclarée, SIRET reçu (compte quelques jours, anticipe dès le premier oui ferme)</span></label>
+        <label class="cond"><input type="checkbox" data-id="p3c"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Témoignage écrit demandé et obtenu à la livraison</span></label>
+
+        <div class="opens">
+          <h4>Ce que ça ouvre</h4>
+          <ul>
+            <li>Augmenter le prix pour le client suivant</li>
+            <li>Le calcul Vinted : compare ton €/h coding et ton €/h revente. Le jour où le coding gagne, Vinted redescend à du cash d'appoint pur.</li>
+            <li>Le contenu qui marche vraiment : « j'ai livré ça à un client, voilà comment »</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- PORTE 4 -->
+    <article class="gate" data-gate="4">
+      <div class="node">4</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">Trois clients livrés</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">Tu as enfin des histoires vraies à raconter.</p>
+        <span class="cond-label">Conditions</span>
+        <label class="cond"><input type="checkbox" data-id="p4a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">3 factures payées</span></label>
+        <label class="cond"><input type="checkbox" data-id="p4b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">3 témoignages écrits</span></label>
+        <label class="cond"><input type="checkbox" data-id="p4c"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">3 études de cas réelles au portfolio, avec de vrais clients derrière</span></label>
+
+        <div class="opens">
+          <h4>Ce que ça ouvre</h4>
+          <ul>
+            <li>Le long format YouTube — une vidéo longue a besoin d'un enjeu et d'une fin, pas d'un tuto de plus</li>
+            <li>La fusion : les automatisations codées pour toi (revente, prospection, devis) deviennent vendables à d'autres → micro-SaaS</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- PORTE 5 -->
+    <article class="gate" data-gate="5">
+      <div class="node">5</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">Le récurrent</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">C'est ici seulement que tu peux regarder ailleurs sans te saborder.</p>
+        <span class="cond-label">Conditions — l'une des deux suffit</span>
+        <label class="cond"><input type="checkbox" data-id="p5a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">2 contrats de maintenance mensuels signés (30 à 80 € par mois et par site)</span></label>
+        <label class="cond"><input type="checkbox" data-id="p5b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Ou 3 mois d'affilée où le coding couvre mes charges</span></label>
+
+        <div class="opens">
+          <h4>Ce que ça ouvre</h4>
+          <ul>
+            <li>Le Discord, gratuit, autour de ton contenu — tu testes si les gens viennent</li>
+            <li>Le stream. Avant ça, streamer du code débutant n'est pas du contenu, c'est un puits à temps : personne ne découvre un streamer inconnu.</li>
+          </ul>
+        </div>
+        <div class="warn"><b>Seule exception au stream.</b> Si streamer t'aide à t'asseoir et bosser (effet body-double), fais-le sans aucune attente d'audience. Ce n'est plus du contenu, c'est un outil de discipline — et les rushs se découpent en shorts, donc rien n'est perdu.</div>
+      </div>
+    </article>
+
+    <!-- PORTE 6 -->
+    <article class="gate" data-gate="6">
+      <div class="node">6</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">On me demande comment j'ai fait</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">La demande vient d'eux, pas de toi.</p>
+        <span class="cond-label">Conditions</span>
+        <label class="cond"><input type="checkbox" data-id="p6a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Des DM entrants réguliers qui demandent conseil</span></label>
+        <label class="cond"><input type="checkbox" data-id="p6b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Un Discord réellement actif : des gens qui parlent même quand je n'y suis pas</span></label>
+
+        <div class="opens">
+          <h4>Ce que ça ouvre</h4>
+          <ul><li>La formation payante</li></ul>
+        </div>
+        <div class="warn"><b>Le risque.</b> Vendre « deviens dev freelance » avec un seul client au compteur, c'est le truc qui te grille une fois pour toutes. La crédibilité ne se dépense qu'une fois.</div>
+      </div>
+    </article>
+
+    <!-- PORTE 7 -->
+    <article class="gate" data-gate="7">
+      <div class="node">7</div>
+      <div class="card">
+        <div class="gate-head">
+          <h3 class="gate-name">TikTok Shop / import</h3>
+          <span class="gate-state">Verrouillée</span>
+        </div>
+        <p class="gate-sub">L'idée la plus dangereuse de la liste — pas la pire.</p>
+        <span class="cond-label">Conditions</span>
+        <label class="cond"><input type="checkbox" data-id="p7a"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">3 mois consécutifs de revenu coding stable</span></label>
+        <label class="cond"><input type="checkbox" data-id="p7b"><span class="box"><svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6.2 4.4 9 10.5 2.8" stroke="#0F141A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cond-text">Une trésorerie que je peux perdre entièrement sans que ma vie change</span></label>
+
+        <div class="warn"><b>Pourquoi cette porte est si haute.</b> Le dropshipping demande du capital de test, de la trésorerie et ton attention complète. Fait à moitié pendant une phase d'apprentissage, ça brûle ton argent <em>et</em> ton temps.</div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="slab" style="margin-top:8px">
+    <h3>L'imprimante 3D</h3>
+    <p>Pas de porte. Elle n'a pas de chemin vers un business viable : vendre du sur-mesure, c'est de la prospection, de la fabrication, de l'envoi et du SAV pour des petits tickets.</p>
+    <p>Elle sert <b>maintenant</b>, comme accessoire de tes vidéos. Si l'envie revient plus tard : des fichiers STL, jamais des objets physiques — pas de logistique, pas de SAV.</p>
+  </div>
+</section>
+
+<!-- ============ RYTHME ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">03</span><h2>Le rythme</h2></div>
+  <p class="sec-intro">Pas « un peu de chaque, chaque jour » — c'est comme ça qu'on avance de 5 % sur 7 fronts en un an.</p>
+
+  <div class="slab">
+    <h3>La journée</h3>
+    <div class="stack">
+      <div class="step"><span class="t">Bloc long</span><span class="d">Code — 80 % de ton attention<small>Enregistrement d'écran activé dès le début. Automatique, tous les jours. C'est ton stock de rushs infini.</small></span></div>
+      <div class="step"><span class="t">15 min</span><span class="d">Contenu, juste après le bloc code<small>1 short tiré de ce que tu viens de faire + 1 post X sur la même chose.</small></span></div>
+      <div class="step"><span class="t">30 min</span><span class="d">Prospection — à partir de la Porte 2<small>2-3 nouveaux prospects au tableau · 3-5 messages ou relances J+3 / J+7.</small></span></div>
+      <div class="step"><span class="t">15 min max</span><span class="d">Vinted, minuteur sur le téléphone<small>Messages et envois. Rien d'autre. C'est incompressible mais ça ne doit jamais déborder.</small></span></div>
+    </div>
+  </div>
+
+  <div class="slab">
+    <h3>La semaine</h3>
+    <div class="week">
+      <div class="week-row"><span class="day">Lun · Mer · Ven</span><span class="task">Publication des shorts. Jours nommés, pas « un jour sur deux » — sinon tu négocies chaque matin.</span></div>
+      <div class="week-row"><span class="day">Vendredi</span><span class="task">Post LinkedIn : ton meilleur truc de la semaine sur X, réécrit propre. Puis bilan chiffré de la prospection.</span></div>
+      <div class="week-row"><span class="day">Samedi matin</span><span class="task">Vinted, 2 h : sourcing uniquement — achat et veille des prix.</span></div>
+      <div class="week-row"><span class="day">Dimanche</span><span class="task">Vinted, 1 h 30 : batch photos et mise en ligne groupée. 10 annonces d'un coup coûtent moins que 10 fois une annonce.</span></div>
+      <div class="week-row"><span class="day">Dimanche soir</span><span class="task">Option batch : monter 3 shorts d'un coup et les programmer. Ta semaine est faite, tu ne touches plus au montage.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTENU ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">04</span><h2>Le contenu</h2></div>
+  <p class="sec-intro">Ce n'est pas un deuxième métier. C'est ton travail, filmé. S'il te coûte plus de 15 min par jour, tu as dévié.</p>
+
+  <div class="cadence">
+    <div class="cad-row head"><span>Canal</span><span>Fréquence</span><span>Temps</span></div>
+    <div class="cad-row"><span class="ch">Shorts — TikTok, Reels, YT Shorts</span><span class="fq">3/sem plancher · 5 cible</span><span class="tm">20 min max</span></div>
+    <div class="cad-row"><span class="ch">X</span><span class="fq">1 à 2 par jour</span><span class="tm">2 min</span></div>
+    <div class="cad-row"><span class="ch">LinkedIn — canal commercial</span><span class="fq">1 par semaine</span><span class="tm">15 min</span></div>
+    <div class="cad-row off"><span class="ch">Long format YouTube</span><span class="fq">Fermé — Porte 4</span><span class="tm">—</span></div>
+    <div class="cad-row off"><span class="ch">Stream</span><span class="fq">Fermé — Porte 5</span><span class="tm">—</span></div>
+  </div>
+
+  <div class="warn" style="margin-bottom:20px"><b>La règle du jour pourri.</b> Si tu n'as que 15 minutes : short brut, screen recording plus voix, zéro montage. Publier bat peaufiner. Et garde toujours 2 shorts d'avance non publiés — c'est ton airbag pour les semaines de contrôles.</div>
+
+  <div class="slab">
+    <h3>Deux publics, jamais mélangés</h3>
+    <p><b>LinkedIn</b> → tes clients : commerçants, indépendants, agences. C'est de la prospection passive, pas de l'ego.</p>
+    <p><b>TikTok / Reels / Shorts / X</b> → des gens qui construisent : débutants, freelances, curieux, agences qui sous-traitent. Ils ne te paient pas tout de suite, mais c'est ce public qui rend possibles les Portes 5 et 6.</p>
+    <p style="color:var(--muted)">Un restaurateur ne scrolle pas TikTok pour trouver un dev. Ne cherche pas à parler aux deux dans la même vidéo.</p>
+  </div>
+
+  <div class="slab">
+    <h3>L'angle</h3>
+    <p>Tu ne peux pas enseigner le code, tu débutes — tu te ferais corriger en commentaires. Mais personne ne peut copier ton histoire.</p>
+    <p style="font-family:var(--mono);color:var(--signal);font-size:15px">« Je pars de zéro et je construis un vrai business dev, en public. »</p>
+    <p>Sujet de niche, <b>traitement large</b>. Personne ne s'intéresse au code. Tout le monde s'intéresse à quelqu'un qui essaie un truc dur et qui peut échouer.</p>
+    <p style="color:var(--muted)">Ce qui traverse : l'argent (chiffres réels, gains et pertes) · l'échec avoué · le compte à rebours · la transformation visible · l'enjeu personnel.</p>
+    <p><b>Le test avant de publier :</b> est-ce que quelqu'un qui ne code pas comprend les 3 premières secondes ? Si non, tu réécris le hook — pas le sujet.</p>
+  </div>
+
+  <div class="slab">
+    <h3>Les 5 formats, en boucle</h3>
+    <ol class="formats">
+      <li><span class="fname">La galère résolue</span><span class="fdesc">Le pilier le plus fort : tout le monde l'a vécue.</span><span class="hook">« J'ai passé 3 heures sur ce bug. La solution tenait en une lettre. »</span></li>
+      <li><span class="fname">Le regard sur les vrais sites</span><span class="fdesc">Le plus partagé, et le seul qui peut ramener un client par accident.</span><span class="hook">« Ce resto a 4,8 étoiles et perd des clients tous les jours. Regardez son site sur mobile. »</span></li>
+      <li><span class="fname">La micro-démo, 30 secondes</span><span class="fdesc">Tu montres, tu ne racontes pas.</span><span class="hook">« J'ai codé ça en 2 heures. Un commerçant paierait 800 € pour. »</span></li>
+      <li><span class="fname">Le journal</span><span class="fdesc">La transparence est ta seule arme quand tu débutes.</span><span class="hook">« Jour 34. 0 € gagné. Voilà exactement où j'en suis. »</span></li>
+      <li><span class="fname">Le flip Vinted</span><span class="fdesc">Marche parce que c'est de l'argent réel, vérifiable.</span><span class="hook">« Veste achetée 4 €. Revendue 38 €. »</span></li>
+    </ol>
+    <p style="margin-top:18px;color:var(--muted)"><b style="color:var(--chalk)">Jamais de tuto.</b> Un tuto de 45 secondes n'apprend rien à personne, te met en concurrence avec des gens dix fois meilleurs, et ne prouve pas que tu sais livrer.</p>
+  </div>
+
+  <div class="slab">
+    <h3>Le script</h3>
+    <p>Personne n'écrit un script complet — ça s'entend et c'est raide.</p>
+    <div class="stack">
+      <div class="step"><span class="t">1</span><span class="d">Le hook écrit au mot près<small>Les 3 premières secondes, c'est tout ce qui compte.</small></span></div>
+      <div class="step"><span class="t">2</span><span class="d">3 bullets dans les notes. C'est tout.</span></div>
+      <div class="step"><span class="t">3</span><span class="d">Tu parles. Prise 2 ou 3, jamais la 8.</span></div>
+      <div class="step"><span class="t">4</span><span class="d">Structure 45 s : hook → contexte 5 s → la chose 25 s → coupe sur le résultat<small>Pas de « abonnez-vous ».</small></span></div>
+    </div>
+  </div>
+
+  <div class="slab">
+    <h3>Le visage</h3>
+    <p>Non, pas au début. Voix plus écran. Tu enlèves d'un coup le plus gros frein à la publication, et tu apprends ce qui compte vraiment : le hook, le rythme, le montage.</p>
+    <p>Ta <b>voix</b>, elle, montre-la dès le début. Une voix réelle bat une voix IA, et tu t'entraînes à parler — ça se transfère direct dans tes appels clients. 100 shorts, c'est 100 répétitions de pitch.</p>
+    <p style="color:var(--muted)">Le pont naturel, plus tard : tes mains dans le cadre, puis un plan de dos face à l'écran, puis la caméra. Tu glisses au lieu de sauter.</p>
+  </div>
+
+  <div class="slab">
+    <h3>La chaîne technique</h3>
+    <div class="stack">
+      <div class="step"><span class="t">Enregistrer</span><span class="d">OBS Studio, gratuit — écran et micro dans un seul fichier<small>Alternative sans installation : Win + Alt + R (Xbox Game Bar).</small></span></div>
+      <div class="step"><span class="t">Monter</span><span class="d">CapCut, PC ou téléphone<small>Sous-titres automatiques, coupes, musique. N'achète rien.</small></span></div>
+      <div class="step"><span class="t">Format</span><span class="d">Canvas en 9:16 — le piège que personne ne dit<small>Ton écran est en 16:9. Soit tu zoomes fort dans la zone de code, soit tu places le rush en haut avec un gros titre dessous. Un short avec du code illisible ne marche jamais.</small></span></div>
+      <div class="step"><span class="t">Publier</span><span class="d">Export sans watermark, puis 3 uploads à la main<small>Pas de partage direct TikTok → Instagram : l'algo repère le watermark et enterre la vidéo. Compte 4 à 5 minutes.</small></span></div>
+    </div>
+    <p style="margin-top:16px"><b>Le temps réel :</b> 45 min à 1 h pour les premières, 25-30 min vers la dixième, 15-20 min vers la trentième. Ce qui fait exploser : refaire la prise 8 fois, chercher LA musique parfaite, vouloir un montage stylé. Minuteur à 20 min — quand il sonne, tu publies en l'état.</p>
+  </div>
+
+  <div class="slab">
+    <h3>Les comptes</h3>
+    <p><b>TikTok et Instagram :</b> nouveaux comptes. Tes comptes actuels ont un historique — tes potes, ton lycée — et l'algo continuera à te servir ce public-là. Un compte propre le laisse trouver ta vraie niche. Bonus : personne de ton lycée ne voit tes 20 premières vidéos ratées.</p>
+    <p><b>YouTube :</b> garde ton compte Google, crée juste une chaîne à part dessus. Elles sont totalement séparées côté public.</p>
+    <p><b>Le nom :</b> le même partout, vérifié libre sur les trois avant de choisir. Évite « dev », « code », « junior » dans le pseudo — tu vas grandir. Ça devient ta marque quand tu factureras.</p>
+    <p style="color:var(--muted)">Ne fais pas un compte par thème. Un seul compte, ton histoire complète : c'est le mélange qui te rend intéressant, et l'algo suit la rétention, pas le sujet.</p>
+  </div>
+
+  <div class="slab">
+    <h3>Ce que les shorts ouvrent vraiment</h3>
+    <div class="stack">
+      <div class="step"><span class="t">01</span><span class="d">La preuve. Un commerçant qui te voit construire te fait confiance avant l'appel.</span></div>
+      <div class="step"><span class="t">02</span><span class="d">L'inbound : agences qui sous-traitent, autres freelances, petits clients en DM.</span></div>
+      <div class="step"><span class="t">03</span><span class="d">L'audience qui rend possibles les Portes 5 et 6.</span></div>
+      <div class="step"><span class="t">04</span><span class="d">L'entraînement à parler — le bénéfice le plus rentable des quatre, et celui qu'on ne voit pas venir.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCROLL ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">05</span><h2>Consommateur → producteur</h2></div>
+  <p class="sec-intro">La discipline seule ne marche pas. Il faut casser le mécanisme.</p>
+
+  <div class="slab">
+    <h3>Le vrai piège</h3>
+    <p>Le scroll ne vient pas de l'app, il vient du <b>feed d'accueil</b>. Tu ouvres pour poster, et 40 minutes passent.</p>
+    <p><b>La solution :</b> publie depuis le PC. TikTok, Instagram et YouTube ont tous un upload web. Le geste « publier » n'ouvre plus jamais un feed.</p>
+    <p>Si tu dois poster depuis le téléphone : ouvre l'app depuis la barre de recherche, jamais depuis l'icône. Ça casse l'automatisme du doigt.</p>
+  </div>
+
+  <div class="slab">
+    <h3>Les trois renversements</h3>
+    <div class="stack">
+      <div class="step"><span class="t">Repérage</span><span class="d">Ne scrolle plus jamais sans stylo<small>Si tu regardes, c'est pour noter des hooks. 15 minutes minutées, tu en sors avec 3 idées écrites. Le scroll devient du travail.</small></span></div>
+      <div class="step"><span class="t">Ordre</span><span class="d">Tu ne consommes pas avant d'avoir produit<small>Le short du jour part, ensuite tu as le droit de scroller. Jamais l'inverse.</small></span></div>
+      <div class="step"><span class="t">Stats</span><span class="d">Une fois par jour, à heure fixe<small>Rafraîchir le compteur de vues, c'est le même scroll avec un autre visage. C'est le piège spécifique des créateurs débutants.</small></span></div>
+    </div>
+    <p style="margin-top:16px;color:var(--muted)">Le basculement arrive vers ta 20<sup>e</sup> vidéo publiée : le jour où ta première pensée devient « pourquoi ce hook a marché » au lieu de « oh, drôle ».</p>
+  </div>
+
+  <div class="warn"><b>Le biais qui fait abandonner.</b> Tu ne peux pas trouver les débutants — l'algorithme ne montre que ce qui a marché. Tu compares donc ton jour 1 au jour 800 des autres. Le remède : va au fond de leurs profils, scrolle jusqu'à leurs premières vidéos. Cadrage raté, hooks nuls, vues à trois chiffres. C'est <em>ça</em>, ton point de comparaison.</div>
+</section>
+
+<!-- ============ RÈGLES ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">06</span><h2>Les règles d'or</h2></div>
+
+  <ol class="rules">
+    <li>Une <b>mission payée</b> passe toujours avant l'apprentissage. C'est elle, la vraie formation.</li>
+    <li>Une porte ne s'ouvre jamais « <b>presque</b> ». Argent encaissé ou rien.</li>
+    <li>Le contenu est un <b>sous-produit</b>, jamais un projet. Plus de 15 min par jour : tu as dévié.</li>
+    <li><b>Batch</b> tout ce qui peut l'être. Annonces, montage, photos.</li>
+    <li>Tu n'abandonnes rien : tu <b>dates</b>. Chaque idée parkée a sa condition de déblocage écrite — et ton cerveau arrête de tourner dessus.</li>
+    <li>Le <b>dev perso</b> n'est jamais un sujet, seulement un sous-produit. C'est le contenu que ton cerveau propose quand coder devient dur.</li>
+  </ol>
+</section>
+
+<!-- ============ SUIVI ============ -->
+<section>
+  <div class="sec-head"><span class="sec-tag">07</span><h2>Suivi hebdo</h2></div>
+  <p class="sec-intro">À remplir chaque vendredi. Imprime cette page si tu préfères le stylo.</p>
+
+<pre class="log">Semaine du ___ / ___
+
+Shorts publiés .......... ___ / 3 minimum
+Posts X ................. ___
+Post LinkedIn ........... oui / non
+Prospects contactés ..... ___
+Relances envoyées ....... ___
+Réponses reçues ......... ___
+Rendez-vous obtenus ..... ___
+CA encaissé ............. ___ €
+Vinted : ventes ......... ___ €   ·   temps passé ___ h
+
+Porte actuelle : ______
+Ce qui manque pour l'ouvrir : ______________________</pre>
+</section>
+
+<div class="aside">
+  <h3>Parenthèse — les références</h3>
+  <p>Pas essentiel, juste pour voir à quoi ressemble un parcours quand il a abouti : <b>Marc Lou</b> (dev français, publie ses revenus réels), <b>Benjamin Code</b> (série build in public en français), <b>Melvynx</b>, <b>Cocadmin</b> (technique raconté comme une histoire), <b>Micode</b> (sujet pointu, hook universel — le meilleur exemple de traitement large).</p>
+  <p>Regarde-les une fois, vingt minutes, en notant des hooks. Puis ferme. La seule chose transférable est le <b>rythme de publication</b> : tous les jours, même moche, même quand ça ne marche pas. Le reste est le résultat de plusieurs années.</p>
+  <p style="color:var(--steel)">Ne cherche pas un modèle à copier — tu n'en trouveras pas de parfait, et c'est une bonne nouvelle : ta place est libre.</p>
+</div>
+
+<p class="end">Le contenu n'accélère rien s'il n'y a rien à accélérer — 80 % de ton attention va au code</p>
+
+</div>
+
+<script>
+(function(){
+  var KEY = 'roadmap-portes-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.cond input'));
+  var gates = Array.prototype.slice.call(document.querySelectorAll('.gate'));
+  var pipsEl = document.getElementById('pips');
+  var nowEl = document.getElementById('now');
+  var fillEl = document.getElementById('fill');
+  var saveEl = document.getElementById('saveState');
+  var memory = {};
+  var canStore = true;
+
+  var names = ["L'URL publique","Démarchable","Le premier euro encaissé",
+               "Trois clients livrés","Le récurrent","On me demande comment j'ai fait",
+               "TikTok Shop / import"];
+
+  gates.forEach(function(){
+    var p = document.createElement('div');
+    p.className = 'pip';
+    pipsEl.appendChild(p);
+  });
+  var pips = Array.prototype.slice.call(pipsEl.children);
+
+  function collect(){
+    var s = {};
+    boxes.forEach(function(b){ if(b.checked) s[b.dataset.id] = 1; });
+    return s;
+  }
+
+  function apply(state){
+    boxes.forEach(function(b){ b.checked = !!state[b.dataset.id]; });
+  }
+
+  function render(){
+    var firstOpen = -1;
+
+    gates.forEach(function(g, i){
+      var inputs = Array.prototype.slice.call(g.querySelectorAll('.cond input'));
+      var gate = g.dataset.gate;
+      // Porte 5 : une seule des deux conditions suffit
+      var done = (gate === '5')
+        ? inputs.some(function(x){ return x.checked; })
+        : inputs.every(function(x){ return x.checked; });
+
+      g.classList.toggle('done', done);
+      pips[i].classList.toggle('on', done);
+      if(!done && firstOpen === -1) firstOpen = i;
+    });
+
+    gates.forEach(function(g, i){
+      var active = (i === firstOpen);
+      g.classList.toggle('active', active);
+      var s = g.querySelector('.gate-state');
+      s.textContent = g.classList.contains('done') ? 'Ouverte'
+                    : active ? 'En cours' : 'Verrouillée';
+    });
+
+    if(firstOpen === -1){
+      nowEl.textContent = 'Toutes les portes ouvertes';
+      fillEl.style.height = '100%';
+    } else {
+      nowEl.textContent = 'Porte ' + (firstOpen + 1) + ' — ' + names[firstOpen];
+      var target = gates[firstOpen];
+      var top = gates[0].offsetTop;
+      var h = (target.offsetTop - top) + 20;
+      fillEl.style.height = Math.max(0, h) + 'px';
+    }
+  }
+
+  function save(){
+    var state = collect();
+    memory = state;
+    if(!canStore) return;
+    try {
+      window.storage.set(KEY, JSON.stringify(state)).then(function(r){
+        saveEl.textContent = r ? 'Enregistré' : 'Session seulement';
+      }).catch(function(){
+        canStore = false;
+        saveEl.textContent = 'Session seulement';
+      });
+    } catch(e){
+      canStore = false;
+      saveEl.textContent = 'Session seulement';
+    }
+  }
+
+  function load(){
+    try {
+      window.storage.get(KEY).then(function(r){
+        if(r && r.value){ apply(JSON.parse(r.value)); }
+        saveEl.textContent = 'Enregistré';
+        render();
+      }).catch(function(){
+        saveEl.textContent = 'Session seulement';
+        render();
+      });
+    } catch(e){
+      canStore = false;
+      saveEl.textContent = 'Session seulement';
+      render();
+    }
+  }
+
+  boxes.forEach(function(b){
+    b.addEventListener('change', function(){ render(); save(); });
+  });
+
+  document.getElementById('print').addEventListener('click', function(){ window.print(); });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    render(); save();
+  });
+
+  window.addEventListener('resize', render);
+
+  render();
+  load();
+})();
+</script>
