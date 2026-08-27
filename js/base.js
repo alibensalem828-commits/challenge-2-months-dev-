@@ -11,3 +11,8 @@ const nom="ali" ;
 const prix=39;
 const estmajeur=true;
 console.log(prix,estmajeur)
+let gagnant=null;
+let result;
+console.log(result)
+for(let i=1;i>5;i=i+1)
+{console.log(i);}
