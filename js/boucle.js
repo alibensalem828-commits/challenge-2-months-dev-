@@ -15,3 +15,5 @@ for(x;x>=6
 if(x===80){break;}
 
 }
+
+console.log(1==true)
