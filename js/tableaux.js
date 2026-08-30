@@ -1,4 +1,4 @@
-    `let fruits = ["pomme","fraises",'orange'];
+    let fruits = ["pomme","fraises",'orange'];
 
 console.log(fruits[fruits.length-1]);
 console.log(fruits.length);
@@ -12,7 +12,7 @@ console.log(fruits.indexOf('pomme'));
 fruits.unshift('fruit1',"fruit2","fruit3")
 fruits.push("fruits-1","fruit-2")
 fruit.splice(0,3);
-console.log(fruits);`
+console.log(fruits);
 
 
 
