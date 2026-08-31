@@ -13,4 +13,4 @@ for (let client of clients){if(client.age < 50) {
 
 
 console.log(clients[1]);
-console.log(clients[0].nom);
+console.log(clients[0].nom); 
