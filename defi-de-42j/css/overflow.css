@@ -1,0 +1,13 @@
+#div {border: 5px solid black;
+height: 75px;
+overflow: scroll}
+span{background-color: blue;display: block;height: 150px;width: 150px;float:left;}
+#div{background-color: red;display: block;height: 150px;width: 150px;float: left;}
+a{background-color: rgb(255, 0, 255);display: block;
+height: 150px;width: 150px;float: left;}
+
+.box{
+    border: 3px solid;height: auto;width: 46%;
+    float: left;padding :8px;
+}
+
