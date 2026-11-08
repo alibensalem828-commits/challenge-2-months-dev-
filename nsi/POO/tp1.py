@@ -2,26 +2,27 @@ from random import random
 
 class Personnage :
 
-    def __init__(self, nom, vie_max,potions,estmourant,estmort) :
+    def __init__(self, nom, vie_max,potions) :
         self.nom = nom
         self.vie_max = vie_max
         self.vie = vie_max
         self.potions=potions 
-        self.mourant=estmourant 
-        self.mort=estmort
+        
 
     def perdVie(self, n) :
-        if  self.vie - n<=0:
+        self.vie=self.vie - n
+        if self.vie<0:
             self.vie=0
 
         print(self.nom + " perd " + str(n) + " pv " + self.etatPv())
     
     def gagneVie(self, n) :
-        if self.vie + n >= max(self.vie):
+        self.vie=self.vie + n
+        if self.vie>self.vie_max :
             self.vie=self.vie_max
         print(self.nom + " gagne " + str(n) + " pv " + self.etatPv())
         
-    def soigner(self) :
+    def soigner(self):
         self.vie = self.vie_max
         print(self.nom + " est soigné(e) " + self.etatPv())
 
@@ -30,19 +31,20 @@ class Personnage :
 
     def decrire(self) :
         print("Nom : " + self.nom + " " + self.etatPv())
-    #def boirepotions(self):
-        #if self.potions>=1:#
+    def boirepotions(self):
+        if self.potions>=1:
+            if random()<0.8:
+                self.soigner()
+            else:
+                self.perdVie(5)
+            self.potions=self.potions-1
 
     def estmourant(self):
-        if self.vie =< self.vie%2:
-            return True
-        else: 
-            return False
+        return self.vie <= self.vie_max / 2
+            
     def estmort(self):
-        if self.vie=0:
-            return True
-        else:
-            return False
+        return self.vie==0
+        
 
 
 
@@ -51,8 +53,14 @@ class Combat :
     def __init__(self, perso1, perso2) :
         self.perso1 = perso1
         self.perso2 = perso2
+       # self.perdant=perdant
+        #self.gagnant=gagnant
 
     def jouerRound(self) :
+        if self.perso1.estmourant() :
+            self.perso1.boirepotions()
+        if self.perso2.estmourant() :
+            self.perso2.boirepotions()
         # random() retourne un nombre aléatoire entre 0 et 1
         # donc la ligne ci-dessous équivaut à dire "une fois sur deux" :
         if random() > 0.5 :
@@ -67,10 +75,12 @@ class Combat :
         print("Début du combat : " + self.perso1.nom + " vs " + self.perso2.nom)
         print("=============================================")
         print("")        
-
+        
         # Le combat se déroule en 15 rounds
-        for i in range(15) :
+        while self.perso2.estmort()or self.perso1.estmort() :
             self.jouerRound()
+            #if self.perso1.estmourant() or self.perso2.estmourant():
+             #           self.boirepotions()
 
         print("")
         print("=============================================")
@@ -89,10 +99,13 @@ class Combat :
         self.perso1.decrire()
         self.perso2.decrire()
 
-gollum = Personnage("Gollum", 10)
-bilbo = Personnage("Bilbo", 15)
+gollum = Personnage("Gollum", 10,3)
+bilbo = Personnage("Bilbo", 15,2)
+ali= Personnage('ali',20,4)
+pavel=Personnage('pavel',32,0)
 
 combat = Combat(gollum, bilbo)
+#combat = Combat(ali,pavel)
 
 combat.jouerCombat()
 
