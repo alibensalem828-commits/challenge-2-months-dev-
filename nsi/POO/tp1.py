@@ -44,7 +44,8 @@ class Personnage :
             
     def estmort(self):
         return self.vie==0
-        
+    def estvivant(self):
+        return self.vie!=0
 
 
 
@@ -77,7 +78,8 @@ class Combat :
         print("")        
         
         # Le combat se déroule en 15 rounds
-        while self.perso2.estmort()or self.perso1.estmort() :
+        while self.perso1.estvivant() and self.perso2.estvivant() :
+            #while not self.perso1.estmort() and not self.perso2.estmort()
             self.jouerRound()
             #if self.perso1.estmourant() or self.perso2.estmourant():
              #           self.boirepotions()
@@ -98,17 +100,74 @@ class Combat :
         print('État des personnages :')
         self.perso1.decrire()
         self.perso2.decrire()
+    def gagnantperdant(self):
+        #if self.perso2.vie() or self.perso1.vie() == 0:
+        if self.perso1.estmort():
+            print("")
+            print("=============================================")
+            print(self.perso1.nom)
+            print("=============================================")
+            print("")
+        elif self.perso2.estmort():
+            print("")
+            print("=============================================")
+            print(self.perso2.nom)
+            print("=============================================")
+            print("")
+            
+            
+    def planifierCombats(self)
+
+
+class Tournoi :
+    def __init__(self,nom,inscrits,combats,):
+        self.nom=nom
+        self.inscrits=inscrits
+        self.combats=combats
+
+    def inscrire(self,personnage):
+
+        self.inscrits.append(personnage)
+    def planifierCombats(self):
+
+
+    def planifierCombats(self) :
+    n = len(self.inscrits)
+    for i in range(n) :
+        for j in range(???) :         # j commence où, d'après ta règle ?
+            c = Combat(self.inscrits[???], self.inscrits[???])
+            self.combats.???(c)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 gollum = Personnage("Gollum", 10,3)
 bilbo = Personnage("Bilbo", 15,2)
 ali= Personnage('ali',20,4)
 pavel=Personnage('pavel',32,0)
+tournoi=Tournoi('superevent',[],[])
+tournoi.inscrire(gollum)
+tournoi.inscrire(bilbo)
+tournoi.inscrire(ali)
+tournoi.inscrire(pavel)
+
 
 combat = Combat(gollum, bilbo)
 #combat = Combat(ali,pavel)
 
 combat.jouerCombat()
-
+combat.gagnantperdant()
 combat.etat()
 
 combat.soignerPersonnages()

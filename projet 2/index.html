@@ -1,0 +1,90 @@
+Conversation Log
+ok le projet c de faire un sites premieuim fin type premium ty peux utuliser tout les bibliotheque et fais un portofilio ou j'ai mis des demos de automatisations ou je l'envoie a des gens pour montrer mon travaille ici je veux que tu
+  mepate tu te limite pas tu vois 
+
+
+Le portfolio est prêt ! 1698 lignes, tout en un seul fichier. Voici ce qui claque dedans :
+
+🔥 Ce que tu as
+Design premium
+Curseur custom violet qui réagit au survol
+Fond Three.js — 2500 particules colorées qui bougent avec ta souris
+Dark glassmorphism avec overlay noise pour la texture
+Vanilla Tilt — les cartes s'inclinent en 3D au survol
+Gradient textes purple → pink → blue
+Hero section
+Typed.js — le texte change en boucle : "vous fait perdre du temps / nuit à votre croissance / pourrait être délégué à une IA"
+Badge animé avec point vert qui clignote
+Compteurs animés (47 automations, 12 clients, ×8 gain)
+GSAP ScrollTrigger sur toutes les sections
+Démos interactives (toutes animées)
+Carte	Animation live
+Pipeline Lead→Client	Nodes qui s'activent en cascade + métriques qui comptent
+Séquences email	Étapes qui se cochent en temps réel, boucle infinie
+Scraping / veille	Console qui simule un vrai crawler
+Rapports analytics	Barres de chart qui s'animent au scroll
+CRM auto-alimenté	Table live avec scores et statuts
+Alertes multi-canal	Nouvelles notifs qui apparaissent toutes les 3.5s
+Sections complètes
+Marquee ticker des outils (vitesse continue)
+Process 4 étapes
+Stack 16 outils
+3 témoignages
+CTA + canaux de contact
+
+Ouvre le fichier ici : index.html
+
+Prochaines étapes pour personnaliser :
+
+Remplace hello@autoflow.fr par ton email
+Mets ton vrai pseudo Telegram / LinkedIn
+Change le nom AutoFlow par le tien
+Ajoute tes vraies captures d'écran de workflows
+
+Tu veux que j'ajoute des pages dédiées pour chaque automatisation, un formulaire de contact fonctionnel, ou des animations encore plus poussées ?
+
+ok lqnce le
+Working
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoFlow — Automatisations Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Libraries CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    /* ═══════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #040508;
+      --bg2: #07090f;
+      --surface: rgba(255,255,255,0.03);
+      --surface2: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --accent: #7c5cfc;
+      --accent2: #c084fc;
+      --accent3: #38bdf8;
+      --accent4: #34d399;
+      --gold: #f59e0b;
+      --text: #f1f5f9;
+      --text2: #94a3b8;
+      --text3: #475569;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --glow: 0 0 60px rgba(124,92,252,0.25);
+      --glow2: 0 0 40px rgba(192,132,252,0.2);
+    }
